@@ -1,0 +1,32 @@
+#!/bin/sh -e
+
+network_shutdown() {
+    [ -e /proc/mounts ] || return 0
+
+    if [ -e /etc/iscsi/iscsi.initramfs ]; then
+        echo "not deconfiguring network interfaces: root filesystem appears to be on iSCSI."
+        return 0
+    fi
+
+    exec 9<&0 < /proc/mounts
+    while read DEV MTPT FSTYPE REST; do
+        case $DEV in
+        /dev/nbd*|/dev/nd[a-z]*|/dev/etherd/e*)
+            echo "not deconfiguring network interfaces: network devices still mounted."
+            return 0
+            ;;
+        esac
+        case $FSTYPE in
+        nfs|nfs4|smbfs|ncp|ncpfs|cifs|coda|ocfs2|gfs|pvfs|pvfs2|fuse.httpfs|fuse.curlftpfs)
+            echo "not deconfiguring network interfaces: network file systems still mounted."
+            return 0
+            ;;
+        esac
+    done
+    exec 0<&9 9<&-
+
+    echo "bringing down networking interfaces..."
+    ifdown -a >/dev/null 2>/dev/null
+}
+
+network_shutdown

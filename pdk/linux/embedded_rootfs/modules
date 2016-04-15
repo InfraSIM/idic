@@ -1,0 +1,21 @@
+e1000
+libcrc32c
+mdio
+af_packet
+processor
+usbcore
+ehci_hcd
+sunrpc
+nfs
+nfs_acl
+lockd
+auth_rpcgss
+thermal
+msr
+cdrom
+usb_storage
+kvm ignore_msrs=1
+kvm-intel nested=1
+usbhid
+tun
+

@@ -1,0 +1,499 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Message &mdash; Paramiko  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Paramiko  documentation" href="../index.html" />
+    <link rel="next" title="Packetizer" href="packet.html" />
+    <link rel="prev" title="Client" href="client.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-paramiko.message">
+<span id="message"></span><h1>Message<a class="headerlink" href="#module-paramiko.message" title="Permalink to this headline">¶</a></h1>
+<p>Implementation of an SSH2 &#8220;message&#8221;.</p>
+<dl class="class">
+<dt id="paramiko.message.Message">
+<em class="property">class </em><code class="descclassname">paramiko.message.</code><code class="descname">Message</code><span class="sig-paren">(</span><em>content=None</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message" title="Permalink to this definition">¶</a></dt>
+<dd><p>An SSH2 message is a stream of bytes that encodes some combination of
+strings, integers, bools, and infinite-precision integers (known in Python
+as longs).  This class builds or breaks down such a byte stream.</p>
+<p>Normally you don&#8217;t need to deal with anything this low-level, but it&#8217;s
+exposed for people implementing custom extensions, or features that
+paramiko doesn&#8217;t support yet.</p>
+<dl class="method">
+<dt id="paramiko.message.Message.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>content=None</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new SSH2 message.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>content</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; the byte stream to use as the message content (passed in only when
+decomposing a message).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a string representation of this object, for debugging.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the byte stream content of this message, as a string/bytes obj.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="paramiko.message.Message.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#paramiko.message.Message.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.add">
+<code class="descname">add</code><span class="sig-paren">(</span><em>*seq</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a sequence of items to the stream.  The values are encoded based
+on their type: str, int, bool, list, or long.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Longs are encoded non-deterministically.  Don&#8217;t use this method.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>seq</strong> &#8211; the sequence of items</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.add_adaptive_int">
+<code class="descname">add_adaptive_int</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.add_adaptive_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an integer to the stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><em>int</em></a>) &#8211; integer to add</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.add_boolean">
+<code class="descname">add_boolean</code><span class="sig-paren">(</span><em>b</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.add_boolean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a boolean value to the stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>b</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#bool" title="(in Python v2.6)"><em>bool</em></a>) &#8211; boolean value to add</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.add_byte">
+<code class="descname">add_byte</code><span class="sig-paren">(</span><em>b</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.add_byte" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a single byte to the stream, without any formatting.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>b</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; byte to add</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.add_bytes">
+<code class="descname">add_bytes</code><span class="sig-paren">(</span><em>b</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.add_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write bytes to the stream, without any formatting.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>b</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; bytes to add</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.add_int">
+<code class="descname">add_int</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.add_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an integer to the stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><em>int</em></a>) &#8211; integer to add</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.add_int64">
+<code class="descname">add_int64</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.add_int64" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a 64-bit int to the stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#long" title="(in Python v2.6)"><em>long</em></a>) &#8211; long int to add</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.add_list">
+<code class="descname">add_list</code><span class="sig-paren">(</span><em>l</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.add_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a list of strings to the stream.  They are encoded identically to
+a single string of values separated by commas.  (Yes, really, that&#8217;s
+how SSH2 does it.)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>l</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#list" title="(in Python v2.6)"><em>list</em></a>) &#8211; list of strings to add</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.add_mpint">
+<code class="descname">add_mpint</code><span class="sig-paren">(</span><em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.add_mpint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a long int to the stream, encoded as an infinite-precision
+integer.  This method only works on positive numbers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>z</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#long" title="(in Python v2.6)"><em>long</em></a>) &#8211; long int to add</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.add_string">
+<code class="descname">add_string</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.add_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a string to the stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>s</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; string to add</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.asbytes">
+<code class="descname">asbytes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.asbytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the byte stream content of this Message, as bytes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.get_adaptive_int">
+<code class="descname">get_adaptive_int</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_adaptive_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch an int from the stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a 32-bit unsigned <a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.get_binary">
+<code class="descname">get_binary</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_binary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a string from the stream.  This could be a byte string and may
+contain unprintable characters.  (It&#8217;s not unheard of for a string to
+contain another byte-stream Message.)</p>
+<p>&#64;return: a string.
+&#64;rtype: string</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.get_boolean">
+<code class="descname">get_boolean</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_boolean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a boolean from the stream.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.get_byte">
+<code class="descname">get_byte</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_byte" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the next byte of the message, without decomposing it.  This
+is equivalent to <a class="reference internal" href="#paramiko.message.Message.get_bytes" title="paramiko.message.Message.get_bytes"><code class="xref py py-obj docutils literal"><span class="pre">get_bytes(1)</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the next (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>) byte of the message, or <code class="docutils literal"><span class="pre">'\'</span></code> if there aren&#8217;t
+any bytes remaining.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.get_bytes">
+<code class="descname">get_bytes</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the next <code class="docutils literal"><span class="pre">n</span></code> bytes of the message (as a <a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>), without
+decomposing into an int, decoded string, etc.  Just the raw bytes are
+returned. Returns a string of <code class="docutils literal"><span class="pre">n</span></code> zero bytes if there weren&#8217;t <code class="docutils literal"><span class="pre">n</span></code>
+bytes remaining in the message.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.get_int">
+<code class="descname">get_int</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch an int from the stream.</p>
+<p>&#64;return: a 32-bit unsigned integer.
+&#64;rtype: int</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.get_int64">
+<code class="descname">get_int64</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_int64" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a 64-bit int from the stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a 64-bit unsigned integer (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#long" title="(in Python v2.6)"><code class="xref py py-obj docutils literal"><span class="pre">long</span></code></a>).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.get_list">
+<code class="descname">get_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a <a class="reference external" href="http://docs.python.org/2.6/library/functions.html#list" title="(in Python v2.6)"><code class="xref py py-obj docutils literal"><span class="pre">list</span></code></a> of <a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><code class="xref py py-obj docutils literal"><span class="pre">strings</span></code></a> from the stream.</p>
+<p>These are trivially encoded as comma-separated values in a string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.get_mpint">
+<code class="descname">get_mpint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_mpint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a long int (mpint) from the stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">an arbitrary-length integer (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#long" title="(in Python v2.6)"><code class="xref py py-obj docutils literal"><span class="pre">long</span></code></a>).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.get_remainder">
+<code class="descname">get_remainder</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_remainder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the bytes (as a <a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>) of this message that haven&#8217;t already been
+parsed and returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.get_so_far">
+<code class="descname">get_so_far</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_so_far" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> bytes of this message that have been parsed and
+returned. The string passed into a message&#8217;s constructor can be
+regenerated by concatenating <code class="docutils literal"><span class="pre">get_so_far</span></code> and <a class="reference internal" href="#paramiko.message.Message.get_remainder" title="paramiko.message.Message.get_remainder"><code class="xref py py-obj docutils literal"><span class="pre">get_remainder</span></code></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.get_string">
+<code class="descname">get_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a <a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> from the stream.  This could be a byte string and may
+contain unprintable characters.  (It&#8217;s not unheard of for a string to
+contain another byte-stream message.)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.get_text">
+<code class="descname">get_text</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a string from the stream.  This could be a byte string and may
+contain unprintable characters.  (It&#8217;s not unheard of for a string to
+contain another byte-stream Message.)</p>
+<p>&#64;return: a string.
+&#64;rtype: string</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.message.Message.rewind">
+<code class="descname">rewind</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.rewind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rewind the message to the beginning as if no items had been parsed
+out of it yet.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Paramiko</a></h1>
+
+
+
+<p class="blurb">A Python implementation of SSHv2.</p>
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=paramiko&repo=paramiko&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/paramiko/paramiko">
+    <img
+        alt="https://secure.travis-ci.org/paramiko/paramiko.png?branch=master"
+        src="https://secure.travis-ci.org/paramiko/paramiko.png?branch=master"
+    >
+</a>
+</p>
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Client</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Message</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packet.html">Packetizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transport.html">Transport</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="agent.html">SSH agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hostkeys.html">Host keys / <code class="docutils literal"><span class="pre">known_hosts</span></code> files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keys.html">Key handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssh_gss.html">GSS-API authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kex_gss.html">GSS-API key exchange</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="proxy.html"><code class="docutils literal"><span class="pre">ProxyCommand</span></code> support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Server implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sftp.html">SFTP</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="buffered_pipe.html">Buffered pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">Buffered files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipe.html">Cross-platform pipe implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssh_exception.html">Exceptions</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://www.paramiko.org">Main website</a></li>
+    
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015 Jeff Forcier.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="../_sources/api/message.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18486793-2']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

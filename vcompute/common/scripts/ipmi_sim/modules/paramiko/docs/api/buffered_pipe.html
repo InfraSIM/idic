@@ -1,0 +1,308 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Buffered pipes &mdash; Paramiko  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Paramiko  documentation" href="../index.html" />
+    <link rel="next" title="Buffered files" href="file.html" />
+    <link rel="prev" title="SFTP" href="sftp.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-paramiko.buffered_pipe">
+<span id="buffered-pipes"></span><h1>Buffered pipes<a class="headerlink" href="#module-paramiko.buffered_pipe" title="Permalink to this headline">¶</a></h1>
+<p>Attempt to generalize the &#8220;feeder&#8221; part of a <a class="reference internal" href="channel.html#paramiko.channel.Channel" title="paramiko.channel.Channel"><code class="xref py py-obj docutils literal"><span class="pre">Channel</span></code></a>: an object which can be
+read from and closed, but is reading from a buffer fed by another thread.  The
+read operations are blocking and can have a timeout set.</p>
+<dl class="class">
+<dt id="paramiko.buffered_pipe.BufferedPipe">
+<em class="property">class </em><code class="descclassname">paramiko.buffered_pipe.</code><code class="descname">BufferedPipe</code><a class="headerlink" href="#paramiko.buffered_pipe.BufferedPipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>A buffer that obeys normal read (with timeout) &amp; close semantics for a
+file or socket, but is fed data from another thread.  This is used by
+<a class="reference internal" href="channel.html#paramiko.channel.Channel" title="paramiko.channel.Channel"><code class="xref py py-obj docutils literal"><span class="pre">Channel</span></code></a>.</p>
+<dl class="method">
+<dt id="paramiko.buffered_pipe.BufferedPipe.__len__">
+<code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.buffered_pipe.BufferedPipe.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of bytes buffered.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">number (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a>) of bytes buffered</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="paramiko.buffered_pipe.BufferedPipe.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#paramiko.buffered_pipe.BufferedPipe.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.buffered_pipe.BufferedPipe.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.buffered_pipe.BufferedPipe.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close this pipe object.  Future calls to <a class="reference internal" href="#paramiko.buffered_pipe.BufferedPipe.read" title="paramiko.buffered_pipe.BufferedPipe.read"><code class="xref py py-obj docutils literal"><span class="pre">read</span></code></a> after the buffer
+has been emptied will return immediately with an empty string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.buffered_pipe.BufferedPipe.empty">
+<code class="descname">empty</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.buffered_pipe.BufferedPipe.empty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear out the buffer and return all data that was in it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">any data that was in the buffer prior to clearing it out, as a
+<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.buffered_pipe.BufferedPipe.feed">
+<code class="descname">feed</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.buffered_pipe.BufferedPipe.feed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Feed new data into this pipe.  This method is assumed to be called
+from a separate thread, so synchronization is done.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> &#8211; the data to add, as a <a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <code class="xref py py-obj docutils literal"><span class="pre">bytes</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.buffered_pipe.BufferedPipe.read">
+<code class="descname">read</code><span class="sig-paren">(</span><em>nbytes</em>, <em>timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.buffered_pipe.BufferedPipe.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data from the pipe.  The return value is a string representing
+the data received.  The maximum amount of data to be received at once
+is specified by <code class="docutils literal"><span class="pre">nbytes</span></code>.  If a string of length zero is returned,
+the pipe has been closed.</p>
+<p>The optional <code class="docutils literal"><span class="pre">timeout</span></code> argument can be a nonnegative float expressing
+seconds, or <code class="docutils literal"><span class="pre">None</span></code> for no timeout.  If a float is given, a
+<a class="reference internal" href="#paramiko.buffered_pipe.PipeTimeout" title="paramiko.buffered_pipe.PipeTimeout"><code class="xref py py-obj docutils literal"><span class="pre">PipeTimeout</span></code></a> will be raised if the timeout period value has elapsed
+before any data arrives.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>nbytes</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><em>int</em></a>) &#8211; maximum number of bytes to read</li>
+<li><strong>timeout</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#float" title="(in Python v2.6)"><em>float</em></a>) &#8211; maximum seconds to wait (or <code class="docutils literal"><span class="pre">None</span></code>, the default, to wait forever)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the read data, as a <code class="xref py py-obj docutils literal"><span class="pre">bytes</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Raises PipeTimeout:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first last">if a timeout was specified and no data was ready before that
+timeout</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.buffered_pipe.BufferedPipe.read_ready">
+<code class="descname">read_ready</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.buffered_pipe.BufferedPipe.read_ready" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if data is buffered and ready to be read from this
+feeder.  A <code class="docutils literal"><span class="pre">False</span></code> result does not mean that the feeder has closed;
+it means you may need to wait before more data arrives.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">True</span></code> if a <a class="reference internal" href="#paramiko.buffered_pipe.BufferedPipe.read" title="paramiko.buffered_pipe.BufferedPipe.read"><code class="xref py py-obj docutils literal"><span class="pre">read</span></code></a> call would immediately return at least one
+byte; <code class="docutils literal"><span class="pre">False</span></code> otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.buffered_pipe.BufferedPipe.set_event">
+<code class="descname">set_event</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.buffered_pipe.BufferedPipe.set_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set an event on this buffer.  When data is ready to be read (or the
+buffer has been closed), the event will be set.  When no data is
+ready, the event will be cleared.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/threading.html#threading.Event" title="(in Python v2.6)"><em>threading.Event</em></a>) &#8211; the event to set/clear</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="paramiko.buffered_pipe.PipeTimeout">
+<em class="property">exception </em><code class="descclassname">paramiko.buffered_pipe.</code><code class="descname">PipeTimeout</code><a class="headerlink" href="#paramiko.buffered_pipe.PipeTimeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates that a timeout was reached on a read from a <a class="reference internal" href="#paramiko.buffered_pipe.BufferedPipe" title="paramiko.buffered_pipe.BufferedPipe"><code class="xref py py-obj docutils literal"><span class="pre">BufferedPipe</span></code></a>.</p>
+<dl class="attribute">
+<dt id="paramiko.buffered_pipe.PipeTimeout.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#paramiko.buffered_pipe.PipeTimeout.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Paramiko</a></h1>
+
+
+
+<p class="blurb">A Python implementation of SSHv2.</p>
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=paramiko&repo=paramiko&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/paramiko/paramiko">
+    <img
+        alt="https://secure.travis-ci.org/paramiko/paramiko.png?branch=master"
+        src="https://secure.travis-ci.org/paramiko/paramiko.png?branch=master"
+    >
+</a>
+</p>
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="message.html">Message</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packet.html">Packetizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transport.html">Transport</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="agent.html">SSH agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hostkeys.html">Host keys / <code class="docutils literal"><span class="pre">known_hosts</span></code> files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keys.html">Key handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssh_gss.html">GSS-API authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kex_gss.html">GSS-API key exchange</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="proxy.html"><code class="docutils literal"><span class="pre">ProxyCommand</span></code> support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Server implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sftp.html">SFTP</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Buffered pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">Buffered files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipe.html">Cross-platform pipe implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssh_exception.html">Exceptions</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://www.paramiko.org">Main website</a></li>
+    
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015 Jeff Forcier.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="../_sources/api/buffered_pipe.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18486793-2']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

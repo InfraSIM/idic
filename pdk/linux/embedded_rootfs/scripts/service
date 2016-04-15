@@ -1,0 +1,37 @@
+#!/bin/sh
+
+USAGE="Usage: `basename $0` \
+[ service_name [ start | stop | restart | status ] ]"
+
+SERVICE=$1
+ACTION=$2
+SERVICEDIR=/etc/init
+INIT=$SERVICE.init
+
+if [ $# -eq 0 ]; then
+   echo "${USAGE}" >&2
+   exit 1
+fi
+
+if [ -x "${SERVICEDIR}/${INIT}" ]; then
+
+  retval=`${SERVICEDIR}/${INIT} ${ACTION}`
+  if [ -x "${retval}" ]; then
+     echo "${SERVICE} unknown status"
+     exit 1
+  fi
+
+  if [ -n "${retval}" ]; then
+     echo "${SERVICE} is running, process ${retval}"
+     exit 0
+  else
+     echo "${SERVICE} is not running"
+     exit 1
+  fi
+
+else
+   echo "${SERVICE}: unrecognized service" >&2
+   exit 1
+fi
+
+echo "Service: " ${SERVICE}

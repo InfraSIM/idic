@@ -1,0 +1,5 @@
+config CONFIG_PKG_openssh
+        bool "open-ssh"
+        default y
+        help
+                Select to enable and build Linux OpenSSH package

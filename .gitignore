@@ -1,0 +1,7 @@
+.config.*
+*.root_complete
+*.tmpconfig.h
+*.kconfig_include
+*.txt 
+*.pyc
+*.o

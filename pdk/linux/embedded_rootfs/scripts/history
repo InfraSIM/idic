@@ -1,0 +1,8 @@
+#!/bin/sh
+FILE=~/.ash_history
+STEP=0
+while read LINE
+do
+   echo " $STEP  $LINE"
+   STEP=`expr $STEP + 1`
+done < $FILE

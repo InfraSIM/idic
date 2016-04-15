@@ -1,0 +1,7 @@
+#!/bin/sh
+
+logger -t $0 "Starting vPDU service..."
+vpdud.py -d --logging-method=file:/var/log/vpdud/vpdud.log
+
+logger -t $0 "Starting telnet service..."
+server.py -d --logging-method=file:/var/log/vpdud/vpdud.log

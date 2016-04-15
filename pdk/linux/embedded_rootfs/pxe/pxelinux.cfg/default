@@ -1,0 +1,8 @@
+PROMPT 0
+DEFAULT Linux
+TIMEOUT 50
+
+LABEL Linux
+KERNEL vmlinuz-3.16.0
+APPEND initrd=ramfs.lzma console=ttyS0 quiet
+IPAPPEND 3

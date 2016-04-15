@@ -1,0 +1,16 @@
+menu "Python2.7"
+config CONFIG_PKG_python
+        bool "Python 2.7.11"
+        default y
+        help
+
+config CONFIG_USE_PYTHON_DEB_PKG
+        bool "Install from Debian package type"
+	depends CONFIG_PKG_python
+	default y
+
+config CONFIG_PYTHON_DEB_URL
+	string "Debian packages URL"
+	depends CONFIG_PKG_python && CONFIG_USE_PYTHON_DEB_PKG
+	default "http://security.ubuntu.com/ubuntu/pool/main/p/python2.7/"
+endmenu

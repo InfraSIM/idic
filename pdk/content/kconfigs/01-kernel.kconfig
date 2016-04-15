@@ -1,0 +1,23 @@
+menu "Linux Kernel Setup"
+
+config CONFIG_PKG_kernel
+        bool "kernel"
+        default y
+        help
+                Select to build the Linux kernel
+
+config CONFIG_KERNEL_CC
+	string "Kernel CC Compiler Version"
+	depends CONFIG_PKG_kernel
+	default /usr/bin/gcc-4.4
+	help
+		Set the kernel gcc compiler version
+
+config CONFIG_KERNEL_VERSION
+	string "Kernel Version"
+	depends CONFIG_PKG_kernel
+	default 3.16
+	help
+		Set the kernel version to build
+
+endmenu

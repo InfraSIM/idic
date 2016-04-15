@@ -1,0 +1,206 @@
+#
+#  Installer menu
+#
+menu "Utilities"
+
+config CONFIG_PKG_pciutils
+        bool "pciutils"
+        default y
+        help
+                Select to build the PCI utilities package
+
+config CONFIG_PKG_module_init_tools
+        bool "module tools"
+        default y
+        help
+                Select to enable and build the kernel modules init tools package
+
+config CONFIG_PKG_ethtool
+        bool "ethtool"
+        default y
+        help
+                Select to enable and build ethtool utility
+
+config CONFIG_PKG_ipmitool
+        bool "ipmitool"
+        default y
+        help
+                Select to enable and build IPMItool package
+
+config CONFIG_PKG_openipmi
+        bool "openipmi"
+        default y
+        help
+                Select to enable and build OpenIPMI package
+
+config CONFIG_GIT_OPENIPMI_URL
+	string "Git URL"
+	depends CONFIG_PKG_openipmi
+	default "https://github.com/InfraSIM/openipmi.git"
+	help
+		Set the OpenIPMI Git repo URL
+
+config CONFIG_PKG_dmidecode
+        bool "dmidecode"
+        default y
+        help
+                Select to enable dmidecode
+
+config CONFIG_DMIDECODE_URL
+	string "dmidecode source URL"
+	depends CONFIG_PKG_dmidecode
+	default "http://security.ubuntu.com/ubuntu/pool/main/d/dmidecode"
+	help
+		set dmidecode source URL
+
+config CONFIG_PKG_lscpu
+        bool "lscpu"
+        default y
+        help
+                Select to enable lscpu
+
+config CONFIG_PKG_hdparm
+        bool "hdparm"
+        default n
+        help
+                Select to enable hdparm
+
+config CONFIG_HDPARM_URL
+	string "hdparm source URL"
+	depends CONFIG_PKG_hdparm
+	default "http://security.ubuntu.com/ubuntu/pool/main/h/hdparm"
+	help
+		set hdparm source URL
+
+config CONFIG_PKG_socat
+        bool "socat"
+        default y
+        help
+                Enable socat
+
+config CONFIG_PKG_sqlite3
+        bool "sqlite3"
+        default n
+        help
+                Enable sqlite3 database
+
+config CONFIG_SQLITE3_URL
+        string "sqlite3 source URL"
+        depends CONFIG_PKG_sqlite3
+        default "http://security.ubuntu.com/ubuntu/pool/main/s/sqlite3"
+        help
+            set sqlite3 source URL
+
+config CONFIG_PKG_ipmisim_util
+        bool "ipmisim_util"
+        default y
+        help
+                select to enable ipmisim util
+
+config CONFIG_PKG_smbiostool
+        bool "smbios tool"
+        default y
+        help
+            This tool is used to set the system serial number in smbios table
+
+config CONFIG_GIT_TOOLS_URL
+        string "Git URL"
+        depends CONFIG_PKG_smbiostool
+        default "ssh://git@hwstashprd01.isus.emc.com:7999/idic/tools.git"
+        help
+            set the tools Git repo URL
+
+config CONFIG_PKG_open-vm-tools
+	bool "open-vm-tools"
+	default y
+	help
+            select to enable the open vm tools
+
+config CONFIG_PKG_pycrypto
+        bool "pycrypto"
+        default y
+        help
+            select to enable the pycrypto
+
+config CONFIG_PKG_setuptools
+	bool "Python setuptools"
+	default y
+	help
+	  python setuptools
+
+config CONFIG_PKG_flask
+	bool "python flask framework"
+	default y
+	help
+	  python flask framework
+
+config CONFIG_PKG_werkzeug
+	bool "python werkzeug framework"
+	default y
+	help
+      python werkzeug framework
+
+config CONFIG_PKG_jinja2
+	bool "python JinJa2 library"
+	default y
+
+config CONFIG_PKG_markupsafe
+	bool "python MarkupSafe library"
+	default y
+
+config CONFIG_PKG_aniso8601
+	bool "python aniso8601 library"
+	default y
+
+config CONFIG_PKG_functools32
+	bool "python functools32 library"
+	default y
+
+config CONFIG_PKG_itsdangerous
+	bool "python itsdangerous library"
+	default y
+
+config CONFIG_PKG_jsonschema
+	bool "python jsonschema library"
+	default y
+
+config CONFIG_PKG_ordereddict
+	bool "python ordereddict library"
+	default y
+
+config CONFIG_PKG_python-dateutil
+	bool "python python-dateutil library"
+	default y
+
+config CONFIG_PKG_pytz
+	bool "python pytz library"
+	default y
+
+config CONFIG_PKG_repoze
+	bool "python repoze.lru library"
+	default y
+
+config CONFIG_PKG_six
+	bool "python six library"
+	default y
+
+config CONFIG_PKG_vcversioner
+	bool "python vcversioner library"
+	default y
+
+config CONFIG_PKG_flask-restplus
+	bool "python flask-restplus library"
+	default y
+
+config CONFIG_PKG_sudo
+        bool "sudo"
+        default y
+        help
+            Enable sudo
+
+config CONFIG_PKG_iproute2
+	bool "iproute2"
+	default y
+	help
+		enable iproute2
+endmenu # Installer menu

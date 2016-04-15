@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# start socat, listen 9003 port and direct the info to pty
+if [ -e /bin/socat ]; then
+    logger -t $0 "starting socat...."
+    /bin/socat pty,link=/etc/ipmi/pty0,waitslave tcp-listen:9003,fork &
+fi
+
+sleep 5
+
+TERM=/dev/tty5
+if [ -e /bin/ipmi_sim ]; then
+	logger -t $0 "starting BMC simulator..."
+    mkdir -p /var/lock
+    /bin/ipmi_sim -c /etc/ipmi/vbmc.conf -f /etc/ipmi/vbmc.emu -s /var > $TERM < $TERM &
+fi
+
+# start ipmisim wrapper
+if [ -f /etc/ipmi/util/ipmi_sim.py ]; then
+    logger -t $0 "starting BMC simulator wrapper..."
+    python /etc/ipmi/util/ipmi_sim.py &
+    if [ $? -ne 0 ];then
+        logger -t $0 "failed to run BMC simulator wrapper..."
+    fi
+fi

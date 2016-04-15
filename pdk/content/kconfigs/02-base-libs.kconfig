@@ -1,0 +1,15 @@
+menu "Base Libraries"
+
+config CONFIG_PKG_base-libs
+        bool "base-libs"
+        default y
+        help
+                Select to build the base library package to incliude
+
+config CONFIG_BASE_LIB
+	string "Base library"
+	depends CONFIG_PKG_base-libs
+	default trusty-lib-base
+	help
+		Set the base library name
+endmenu

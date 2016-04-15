@@ -1,0 +1,98 @@
+#!/bin/sh
+
+NAME=ntpd
+DESC="Network Time Protocol daemon"
+PIDFILE="/var/run/$NAME"
+CONFIG=/etc/ntpd.conf
+PID=
+
+check_pid()
+{
+    PID=""
+    pids=`pidof ${NAME}`
+    for pid in ${pids}
+    do
+        PID="${PID} ${pid}"
+    done
+    if [ -n "${PID}" ]; then
+       return 0
+    fi
+    return 1
+}
+
+start_service()
+{
+   if [ -e ${CONFIG} ]; then
+      while read line
+      do
+         ret=`expr match "${line}" "server"`
+         if [ ${ret} != 0 ]; then
+            /usr/sbin/${NAME} -p ${line#server}
+         fi
+      done < ${CONFIG}
+   fi
+
+   pids=`pidof ${NAME}`
+   for pid in ${pids}
+   do
+      echo ${pid} > ${PIDFILE}.${pid}
+   done
+   sleep 2
+}
+
+case "$1" in
+  start)
+      check_pid
+      if [ $? = 0 ]; then
+         echo ${PID}
+         exit 0
+      fi
+
+      start_service
+      check_pid
+      if [ $? = 0 ]; then
+          echo ${PID}
+          exit 0
+      fi
+  ;;
+  stop)
+      check_pid
+      if [ $? = 0 ]; then
+          pkill ${NAME}
+          rm -f ${PIDFILE}*
+          sleep 1
+          check_pid
+          if [ $? = 0 ]; then
+             echo ${PID}
+          fi
+      fi
+  ;;
+  status)
+      check_pid
+      if [ $? = 0 ]; then
+          echo ${PID}
+      fi
+  ;;
+  restart)
+      check_pid
+      if [ $? = 0 ]; then
+         sleep 1
+         pkill ${NAME}
+         rm -f ${PIDFILE}*
+      fi
+
+      start_service
+      check_pid
+      if [ $? = 0 ]; then
+          echo ${PID}
+      fi
+  ;;
+  *)
+      start_service
+      check_pid
+      if [ $? = 0 ]; then
+         echo ${PID}
+         exit 0
+      fi
+  ;;
+esac

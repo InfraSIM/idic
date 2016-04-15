@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if [ "$IFACE" == "lo" ]; then
+   exit 0
+fi
+
+IPADDR=`ip address show $IFACE | awk '/inet / {print $2}' | cut -d/ -f1`
+if [ -z "$IPADDR" ]; then
+   exit 0
+fi
+
+GW=`ip route show $IFACE | grep $IFACE | awk '{print $3}'`
+sed -i -r 's/Address: (\b[0-9]{1,3}\.){3}[0-9]{1,3}\b/Address: '$IPADDR/ /etc/issue
+sed -i -r 's/Gateway: (\b[0-9]{1,3}\.){3}[0-9]{1,3}\b/Gateway: '$GW/ /etc/issue

@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to Paramiko’s documentation! &mdash; Paramiko  documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Paramiko  documentation" href="#" />
+    <link rel="next" title="Channel" href="api/channel.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-paramiko-s-documentation">
+<h1>Welcome to Paramiko&#8217;s documentation!<a class="headerlink" href="#welcome-to-paramiko-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>This site covers Paramiko&#8217;s usage &amp; API documentation. For basic info on what
+Paramiko is, including its public changelog &amp; how the project is maintained,
+please see <a class="reference external" href="http://paramiko.org">the main project website</a>.</p>
+<div class="section" id="api-documentation">
+<h2>API documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
+<p>The high-level client API starts with creation of an <a class="reference internal" href="api/client.html#paramiko.client.SSHClient" title="paramiko.client.SSHClient"><code class="xref py py-obj docutils literal"><span class="pre">SSHClient</span></code></a> object. For
+more direct control, pass a socket (or socket-like object) to a <a class="reference internal" href="api/transport.html#paramiko.transport.Transport" title="paramiko.transport.Transport"><code class="xref py py-obj docutils literal"><span class="pre">Transport</span></code></a>,
+and use <a class="reference internal" href="api/transport.html#paramiko.transport.Transport.start_server" title="paramiko.transport.Transport.start_server"><code class="xref py py-obj docutils literal"><span class="pre">start_server</span></code></a> or <a class="reference internal" href="api/transport.html#paramiko.transport.Transport.start_client" title="paramiko.transport.Transport.start_client"><code class="xref py py-obj docutils literal"><span class="pre">start_client</span></code></a> to negotiate with the remote host as either a server
+or client.</p>
+<p>As a client, you are responsible for authenticating using a password or private
+key, and checking the server&#8217;s host key. (Key signature and verification is
+done by paramiko, but you will need to provide private keys and check that the
+content of a public key matches what you expected to see.)</p>
+<p>As a server, you are responsible for deciding which users, passwords, and keys
+to allow, and what kind of channels to allow.</p>
+<p>Once you have finished, either side may request flow-controlled <a class="reference internal" href="api/channel.html#paramiko.channel.Channel" title="paramiko.channel.Channel"><code class="xref py py-obj docutils literal"><span class="pre">channels</span></code></a> to the other side, which are Python objects that act like sockets,
+but send and receive data over the encrypted session.</p>
+<p>For details, please see the following tables of contents (which are organized
+by area of interest.)</p>
+<div class="section" id="core-ssh-protocol-classes">
+<h3>Core SSH protocol classes<a class="headerlink" href="#core-ssh-protocol-classes" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/message.html">Message</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/packet.html">Packetizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/transport.html">Transport</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="authentication-keys">
+<h3>Authentication &amp; keys<a class="headerlink" href="#authentication-keys" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/agent.html">SSH agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/hostkeys.html">Host keys / <code class="docutils literal"><span class="pre">known_hosts</span></code> files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/keys.html">Key handling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/keys.html#module-paramiko.pkey">Parent key class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/keys.html#module-paramiko.dsskey">DSA (DSS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/keys.html#module-paramiko.rsakey">RSA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/keys.html#module-paramiko.ecdsakey">ECDSA</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/ssh_gss.html">GSS-API authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/kex_gss.html">GSS-API key exchange</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="other-primary-functions">
+<h3>Other primary functions<a class="headerlink" href="#other-primary-functions" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/proxy.html"><code class="docutils literal"><span class="pre">ProxyCommand</span></code> support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/server.html">Server implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/sftp.html">SFTP</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="miscellany">
+<h3>Miscellany<a class="headerlink" href="#miscellany" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/buffered_pipe.html">Buffered pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/file.html">Buffered files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/pipe.html">Cross-platform pipe implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/ssh_exception.html">Exceptions</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">Paramiko</a></h1>
+
+
+
+<p class="blurb">A Python implementation of SSHv2.</p>
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=paramiko&repo=paramiko&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/paramiko/paramiko">
+    <img
+        alt="https://secure.travis-ci.org/paramiko/paramiko.png?branch=master"
+        src="https://secure.travis-ci.org/paramiko/paramiko.png?branch=master"
+    >
+</a>
+</p>
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/message.html">Message</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/packet.html">Packetizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/transport.html">Transport</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/agent.html">SSH agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/hostkeys.html">Host keys / <code class="docutils literal"><span class="pre">known_hosts</span></code> files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/keys.html">Key handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/ssh_gss.html">GSS-API authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/kex_gss.html">GSS-API key exchange</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/proxy.html"><code class="docutils literal"><span class="pre">ProxyCommand</span></code> support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/server.html">Server implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/sftp.html">SFTP</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/buffered_pipe.html">Buffered pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/file.html">Buffered files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/pipe.html">Cross-platform pipe implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/ssh_exception.html">Exceptions</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://www.paramiko.org">Main website</a></li>
+    
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015 Jeff Forcier.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="_sources/index.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18486793-2']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

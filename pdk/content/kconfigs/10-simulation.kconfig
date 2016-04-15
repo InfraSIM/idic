@@ -1,0 +1,30 @@
+menu "Compute Simulation"
+
+config CONFIG_SIMULATION
+        bool "compute simulation"
+        default y
+        help
+                Enable compute simulation packages
+
+config CONFIG_PKG_qemu
+        bool "qemu"
+        depends CONFIG_SIMULATION
+        default y
+        help
+                Enable QEMU emulator and virtualizer
+config CONFIG_GIT_QEMU_URL
+        string "Git URL"
+        depends CONFIG_PKG_qemu
+        default "https://github.com/InfraSIM/qemu.git"
+        help
+                Set the qemu Git repo URL
+
+config CONFIG_PKG_novnc
+        bool "novnc"
+        depends CONFIG_SIMULATION
+        default n
+        help
+                Enables VNC web browser based client that uses HTML5 and websockets.
+
+
+endmenu

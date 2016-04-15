@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+
+HOSTNAME=$(cat /etc/hostname)
+sed -i "s/^\(127\.0\.0\.1[ \t]*localhost\)$/\1 $HOSTNAME/g" /etc/hosts
+
+#create vagrant uesr and set password for vagrant
+if [ ! -d /home/vagrant/.ssh ];then
+    mkdir -p /home/vagrant/.ssh
+
+    cp /etc/ssh/authorized_keys /home/vagrant/.ssh/
+
+    chmod 700 /home/vagrant/.ssh
+
+    chmod 600 /home/vagrant/.ssh/authorized_keys
+
+    chown -R vagrant:vagrant /home/vagrant/.ssh
+
+    sed -i '$a\\vagrant ALL=(ALL) NOPASSWD:ALL' /etc/sudoers
+fi
+

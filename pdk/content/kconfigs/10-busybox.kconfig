@@ -1,0 +1,19 @@
+menu "Busybox"
+config CONFIG_PKG_busybox
+        bool "busybox"
+        default y
+        help
+                Select to build the busybox package
+
+config CONFIG_USE_BUSYBOX_SOURCE
+	bool "Install busybox from source"
+	depends CONFIG_PKG_busybox
+	default y
+
+config CONFIG_BUSYBOX_URL
+	string "busybox source URL"
+	depends CONFIG_USE_BUSYBOX_SOURCE
+	default "https://busybox.net/downloads"
+	help
+		Set busybox source URL
+endmenu

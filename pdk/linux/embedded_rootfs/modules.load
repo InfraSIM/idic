@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Install modules from list
+MODULE_LIST=/etc/modules
+while read line
+do
+    if [ ! -z "$line" ]; then
+        modprobe $line
+    fi
+done < $MODULE_LIST

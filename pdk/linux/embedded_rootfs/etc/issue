@@ -1,0 +1,9 @@
+Virtual Platform Emulator (\n)
+kernel \r \v
+
+Network Information (br0):
+Address: 0.0.0.0
+Netmask: 255.255.255.0
+Gateway: 0.0.0.0
+
+Press ctrl+alt+F5 for IPMI Simulator Console

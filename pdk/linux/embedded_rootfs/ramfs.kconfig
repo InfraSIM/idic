@@ -1,0 +1,85 @@
+menu "Embedded Filesystem"
+
+config CONFIG_ROOTFS
+	bool "Build rootfs"
+	default y
+	help
+		Select to build the root filesystem
+
+config CONFIG_HOSTNAME
+        string "Hostname"
+        depends CONFIG_ROOTFS
+        default "vBMC1.0"
+        help
+                Set system hostname
+
+config CONFIG_EXTRA_FILES
+	string "Extra Files"
+	depends CONFIG_ROOTFS
+	default ""
+	help
+		Optional path to include extra files in the filesystem build
+
+config CONFIG_NFS
+	bool "Add NFS"
+	depends CONFIG_ROOTFS
+	default n
+	help
+		Enables NFS mount to fstab
+
+config CONFIG_NFS_REMOTE
+	string "Remote NFS location"
+	depends CONFIG_NFS
+	default "192.168.1.1:/home/"
+	help
+		Adds a NFS mount point to Linux fstab.  Will be mounted on boot
+		ie: mount a remote home directory
+
+config CONFIG_NFS_MNT_PNT
+	string "Local NFS mount point"
+	depends CONFIG_NFS
+	default "/home"
+	help
+		The local NFS mount point. The remote NFS location will be mounted here.
+
+endmenu
+
+menu "Build Options"
+
+config CONFIG_CC_JOBS
+	string "Job count"
+	default 4
+	help
+		Set the number of compile jobs to allow during the build
+		process.  The more jobs selected the more CPU resources
+		are consumed.
+
+config CONFIG_USE_DISTCC
+        bool "distcc"
+        default n
+        help
+                Select to compile with distcc (Distributed GCC)
+                NOTE:  User must have distcc hosts file setup first.  If you're not sure leave
+                this option deselected.
+
+config CONFIG_ARCH
+        string "CPU architecture"
+        depends CONFIG_PKG_kernel
+        default x86
+        help
+                Set the CPU architecture type
+
+config CONFIG_CC
+	string "GCC Compiler"
+	default gcc
+	help
+		Set the GCC compiler to use for compiling source code
+
+config CONFIG_FLAGS
+	string "Compiler Flags"
+	default ""
+	help
+		Set and additional compiler flags to be used when compiling
+
+endmenu
+source ".kconfig_include"

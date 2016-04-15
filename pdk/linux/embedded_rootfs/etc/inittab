@@ -1,0 +1,9 @@
+::sysinit:/sbin/rc boot
+::shutdown:/sbin/rc.shutdown
+::restart:/sbin/init
+::ctrlaltdel:/sbin/reboot
+tty1::respawn:/sbin/getty -L 9600,115200 tty1
+tty2::respawn:/sbin/getty -L 9600,115200 tty2
+tty3::respawn:/sbin/getty -L 9600,115200 tty3
+tty4::respawn:/sbin/getty -L 9600,115200 tty4
+ttyS0::respawn:/sbin/getty -L 9600,115200 ttyS0 vt102

@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Configuration &mdash; Paramiko  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Paramiko  documentation" href="../index.html" />
+    <link rel="next" title="ProxyCommand support" href="proxy.html" />
+    <link rel="prev" title="GSS-API key exchange" href="kex_gss.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-paramiko.config">
+<span id="configuration"></span><h1>Configuration<a class="headerlink" href="#module-paramiko.config" title="Permalink to this headline">¶</a></h1>
+<p>Configuration file (aka <code class="docutils literal"><span class="pre">ssh_config</span></code>) support.</p>
+<dl class="class">
+<dt id="paramiko.config.SSHConfig">
+<em class="property">class </em><code class="descclassname">paramiko.config.</code><code class="descname">SSHConfig</code><a class="headerlink" href="#paramiko.config.SSHConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Representation of config information as stored in the format used by
+OpenSSH. Queries can be made via <a class="reference internal" href="#paramiko.config.SSHConfig.lookup" title="paramiko.config.SSHConfig.lookup"><code class="xref py py-obj docutils literal"><span class="pre">lookup</span></code></a>. The format is described in
+OpenSSH&#8217;s <code class="docutils literal"><span class="pre">ssh_config</span></code> man page. This class is provided primarily as a
+convenience to posix users (since the OpenSSH format is a de-facto
+standard on posix) but should work fine on Windows too.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 1.6.</span></p>
+</div>
+<dl class="attribute">
+<dt id="paramiko.config.SSHConfig.SETTINGS_REGEX">
+<code class="descname">SETTINGS_REGEX</code><em class="property"> = &lt;_sre.SRE_Pattern object&gt;</em><a class="headerlink" href="#paramiko.config.SSHConfig.SETTINGS_REGEX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="paramiko.config.SSHConfig.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.config.SSHConfig.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new OpenSSH config object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.config.SSHConfig.parse">
+<code class="descname">parse</code><span class="sig-paren">(</span><em>file_obj</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.config.SSHConfig.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read an OpenSSH config from the given file object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_obj</strong> &#8211; a file-like object to read the config file from</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.config.SSHConfig.lookup">
+<code class="descname">lookup</code><span class="sig-paren">(</span><em>hostname</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.config.SSHConfig.lookup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dict of config options for a given hostname.</p>
+<p>The host-matching rules of OpenSSH&#8217;s <code class="docutils literal"><span class="pre">ssh_config</span></code> man page are used:
+For each parameter, the first obtained value will be used.  The
+configuration files contain sections separated by <code class="docutils literal"><span class="pre">Host</span></code>
+specifications, and that section is only applied for hosts that match
+one of the patterns given in the specification.</p>
+<p>Since the first obtained value for each parameter is used, more host-
+specific declarations should be given near the beginning of the file,
+and general defaults at the end.</p>
+<p>The keys in the returned dict are all normalized to lowercase (look for
+<code class="docutils literal"><span class="pre">&quot;port&quot;</span></code>, not <code class="docutils literal"><span class="pre">&quot;Port&quot;</span></code>. The values are processed according to the
+rules for substitution variable expansion in <code class="docutils literal"><span class="pre">ssh_config</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>hostname</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; the hostname to lookup</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.config.SSHConfig.get_hostnames">
+<code class="descname">get_hostnames</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.config.SSHConfig.get_hostnames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the set of literal hostnames defined in the SSH config (both
+explicit hostnames and wildcard entries).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="paramiko.config.SSHConfig.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#paramiko.config.SSHConfig.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="paramiko.config.LazyFqdn">
+<em class="property">class </em><code class="descclassname">paramiko.config.</code><code class="descname">LazyFqdn</code><span class="sig-paren">(</span><em>config</em>, <em>host=None</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.config.LazyFqdn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the host&#8217;s fqdn on request as string.</p>
+<dl class="attribute">
+<dt id="paramiko.config.LazyFqdn.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#paramiko.config.LazyFqdn.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Paramiko</a></h1>
+
+
+
+<p class="blurb">A Python implementation of SSHv2.</p>
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=paramiko&repo=paramiko&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/paramiko/paramiko">
+    <img
+        alt="https://secure.travis-ci.org/paramiko/paramiko.png?branch=master"
+        src="https://secure.travis-ci.org/paramiko/paramiko.png?branch=master"
+    >
+</a>
+</p>
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="message.html">Message</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packet.html">Packetizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transport.html">Transport</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="agent.html">SSH agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hostkeys.html">Host keys / <code class="docutils literal"><span class="pre">known_hosts</span></code> files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keys.html">Key handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssh_gss.html">GSS-API authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kex_gss.html">GSS-API key exchange</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="proxy.html"><code class="docutils literal"><span class="pre">ProxyCommand</span></code> support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Server implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sftp.html">SFTP</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="buffered_pipe.html">Buffered pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">Buffered files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipe.html">Cross-platform pipe implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssh_exception.html">Exceptions</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://www.paramiko.org">Main website</a></li>
+    
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015 Jeff Forcier.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="../_sources/api/config.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18486793-2']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

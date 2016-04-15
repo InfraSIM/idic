@@ -1,0 +1,948 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Channel &mdash; Paramiko  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Paramiko  documentation" href="../index.html" />
+    <link rel="next" title="Client" href="client.html" />
+    <link rel="prev" title="Welcome to Paramiko’s documentation!" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-paramiko.channel">
+<span id="channel"></span><h1>Channel<a class="headerlink" href="#module-paramiko.channel" title="Permalink to this headline">¶</a></h1>
+<p>Abstraction for an SSH2 channel.</p>
+<dl class="class">
+<dt id="paramiko.channel.Channel">
+<em class="property">class </em><code class="descclassname">paramiko.channel.</code><code class="descname">Channel</code><span class="sig-paren">(</span><em>chanid</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel" title="Permalink to this definition">¶</a></dt>
+<dd><p>A secure tunnel across an SSH <a class="reference internal" href="transport.html#paramiko.transport.Transport" title="paramiko.transport.Transport"><code class="xref py py-obj docutils literal"><span class="pre">Transport</span></code></a>.  A Channel is meant to behave
+like a socket, and has an API that should be indistinguishable from the
+Python socket API.</p>
+<p>Because SSH2 has a windowing kind of flow control, if you stop reading data
+from a Channel and its buffer fills up, the server will be unable to send
+you any more data until you read some of it.  (This won&#8217;t affect other
+channels on the same transport &#8211; all channels on a single transport are
+flow-controlled independently.)  Similarly, if the server isn&#8217;t reading
+data you send, calls to <a class="reference internal" href="#paramiko.channel.Channel.send" title="paramiko.channel.Channel.send"><code class="xref py py-obj docutils literal"><span class="pre">send</span></code></a> may block, unless you set a timeout.  This
+is exactly like a normal network socket, so it shouldn&#8217;t be too surprising.</p>
+<p>Instances of this class may be used as context managers.</p>
+<dl class="method">
+<dt id="paramiko.channel.Channel.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>chanid</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new channel.  The channel is not associated with any
+particular session or <a class="reference internal" href="transport.html#paramiko.transport.Transport" title="paramiko.transport.Transport"><code class="xref py py-obj docutils literal"><span class="pre">Transport</span></code></a> until the Transport attaches it.
+Normally you would only call this method from the constructor of a
+subclass of <a class="reference internal" href="#paramiko.channel.Channel" title="paramiko.channel.Channel"><code class="xref py py-obj docutils literal"><span class="pre">Channel</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chanid</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><em>int</em></a>) &#8211; the ID of this channel, as passed by an existing <a class="reference internal" href="transport.html#paramiko.transport.Transport" title="paramiko.transport.Transport"><code class="xref py py-obj docutils literal"><span class="pre">Transport</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string representation of this object, for debugging.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the channel.  All future read/write operations on the channel
+will fail.  The remote end will receive no more data (after queued data
+is flushed).  Channels are automatically closed when their <a class="reference internal" href="transport.html#paramiko.transport.Transport" title="paramiko.transport.Transport"><code class="xref py py-obj docutils literal"><span class="pre">Transport</span></code></a>
+is closed or when they are garbage collected.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.exec_command">
+<code class="descname">exec_command</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.exec_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a command on the server.  If the server allows it, the channel
+will then be directly connected to the stdin, stdout, and stderr of
+the command being executed.</p>
+<p>When the command finishes executing, the channel will be closed and
+can&#8217;t be reused.  You must open a new channel if you wish to execute
+another command.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>command</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; a shell command to execute.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Raises SSHException:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">if the request was rejected or the channel was
+closed</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.exit_status_ready">
+<code class="descname">exit_status_ready</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.exit_status_ready" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return true if the remote process has exited and returned an exit
+status. You may use this to poll the process status if you don&#8217;t
+want to block in <a class="reference internal" href="#paramiko.channel.Channel.recv_exit_status" title="paramiko.channel.Channel.recv_exit_status"><code class="xref py py-obj docutils literal"><span class="pre">recv_exit_status</span></code></a>. Note that the server may not
+return an exit status in some cases (like bad servers).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">True</span></code> if <a class="reference internal" href="#paramiko.channel.Channel.recv_exit_status" title="paramiko.channel.Channel.recv_exit_status"><code class="xref py py-obj docutils literal"><span class="pre">recv_exit_status</span></code></a> will return immediately, else <code class="docutils literal"><span class="pre">False</span></code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 1.7.3.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.fileno">
+<code class="descname">fileno</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.fileno" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an OS-level file descriptor which can be used for polling, but
+but not for reading or writing.  This is primarily to allow Python&#8217;s
+<code class="docutils literal"><span class="pre">select</span></code> module to work.</p>
+<p>The first time <code class="docutils literal"><span class="pre">fileno</span></code> is called on a channel, a pipe is created to
+simulate real OS-level file descriptor (FD) behavior.  Because of this,
+two OS-level FDs are created, which will use up FDs faster than normal.
+(You won&#8217;t notice this effect unless you have hundreds of channels
+open at the same time.)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">an OS-level file descriptor (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a>)</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This method causes channel reads to be slightly less efficient.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.get_id">
+<code class="descname">get_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.get_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ID # for this channel.</p>
+<p>The channel ID is unique across a <a class="reference internal" href="transport.html#paramiko.transport.Transport" title="paramiko.transport.Transport"><code class="xref py py-obj docutils literal"><span class="pre">Transport</span></code></a> and usually a small
+number.  It&#8217;s also the number passed to
+<a class="reference internal" href="server.html#paramiko.server.ServerInterface.check_channel_request" title="paramiko.server.ServerInterface.check_channel_request"><code class="xref py py-obj docutils literal"><span class="pre">ServerInterface.check_channel_request</span></code></a> when determining whether to
+accept a channel request in server mode.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.get_name">
+<code class="descname">get_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.get_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the name of this channel that was previously set by <a class="reference internal" href="#paramiko.channel.Channel.set_name" title="paramiko.channel.Channel.set_name"><code class="xref py py-obj docutils literal"><span class="pre">set_name</span></code></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.get_pty">
+<code class="descname">get_pty</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.get_pty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request a pseudo-terminal from the server.  This is usually used right
+after creating a client channel, to ask the server to provide some
+basic terminal semantics for a shell invoked with <a class="reference internal" href="#paramiko.channel.Channel.invoke_shell" title="paramiko.channel.Channel.invoke_shell"><code class="xref py py-obj docutils literal"><span class="pre">invoke_shell</span></code></a>.
+It isn&#8217;t necessary (or desirable) to call this method if you&#8217;re going
+to exectue a single command with <a class="reference internal" href="#paramiko.channel.Channel.exec_command" title="paramiko.channel.Channel.exec_command"><code class="xref py py-obj docutils literal"><span class="pre">exec_command</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>term</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; the terminal type to emulate (for example, <code class="docutils literal"><span class="pre">'vt100'</span></code>)</li>
+<li><strong>width</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><em>int</em></a>) &#8211; width (in characters) of the terminal screen</li>
+<li><strong>height</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><em>int</em></a>) &#8211; height (in characters) of the terminal screen</li>
+<li><strong>width_pixels</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><em>int</em></a>) &#8211; width (in pixels) of the terminal screen</li>
+<li><strong>height_pixels</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><em>int</em></a>) &#8211; height (in pixels) of the terminal screen</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Raises SSHException:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first last">if the request was rejected or the channel was closed</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.get_transport">
+<code class="descname">get_transport</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.get_transport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <a class="reference internal" href="transport.html#paramiko.transport.Transport" title="paramiko.transport.Transport"><code class="xref py py-obj docutils literal"><span class="pre">Transport</span></code></a> associated with this channel.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.getpeername">
+<code class="descname">getpeername</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.getpeername" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the address of the remote side of this Channel, if possible.</p>
+<p>This simply wraps <a class="reference internal" href="transport.html#paramiko.transport.Transport.getpeername" title="paramiko.transport.Transport.getpeername"><code class="xref py py-obj docutils literal"><span class="pre">Transport.getpeername</span></code></a>, used to provide enough of a
+socket-like interface to allow asyncore to work. (asyncore likes to
+call <code class="docutils literal"><span class="pre">'getpeername'</span></code>.)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.gettimeout">
+<code class="descname">gettimeout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.gettimeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the timeout in seconds (as a float) associated with socket
+operations, or <code class="docutils literal"><span class="pre">None</span></code> if no timeout is set.  This reflects the last
+call to <a class="reference internal" href="#paramiko.channel.Channel.setblocking" title="paramiko.channel.Channel.setblocking"><code class="xref py py-obj docutils literal"><span class="pre">setblocking</span></code></a> or <a class="reference internal" href="#paramiko.channel.Channel.settimeout" title="paramiko.channel.Channel.settimeout"><code class="xref py py-obj docutils literal"><span class="pre">settimeout</span></code></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.invoke_shell">
+<code class="descname">invoke_shell</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.invoke_shell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request an interactive shell session on this channel.  If the server
+allows it, the channel will then be directly connected to the stdin,
+stdout, and stderr of the shell.</p>
+<p>Normally you would call <a class="reference internal" href="#paramiko.channel.Channel.get_pty" title="paramiko.channel.Channel.get_pty"><code class="xref py py-obj docutils literal"><span class="pre">get_pty</span></code></a> before this, in which case the
+shell will operate through the pty, and the channel will be connected
+to the stdin and stdout of the pty.</p>
+<p>When the shell exits, the channel will be closed and can&#8217;t be reused.
+You must open a new channel if you wish to open another shell.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Raises SSHException:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">if the request was rejected or the channel was
+closed</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.invoke_subsystem">
+<code class="descname">invoke_subsystem</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.invoke_subsystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request a subsystem on the server (for example, <code class="docutils literal"><span class="pre">sftp</span></code>).  If the
+server allows it, the channel will then be directly connected to the
+requested subsystem.</p>
+<p>When the subsystem finishes, the channel will be closed and can&#8217;t be
+reused.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>subsystem</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; name of the subsystem being requested.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Raises SSHException:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">if the request was rejected or the channel was closed</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.makefile">
+<code class="descname">makefile</code><span class="sig-paren">(</span><em>*params</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.makefile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a file-like object associated with this channel.  The optional
+<code class="docutils literal"><span class="pre">mode</span></code> and <code class="docutils literal"><span class="pre">bufsize</span></code> arguments are interpreted the same way as by
+the built-in <code class="docutils literal"><span class="pre">file()</span></code> function in Python.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#paramiko.channel.ChannelFile" title="paramiko.channel.ChannelFile"><code class="xref py py-obj docutils literal"><span class="pre">ChannelFile</span></code></a> object which can be used for Python file I/O.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.makefile_stderr">
+<code class="descname">makefile_stderr</code><span class="sig-paren">(</span><em>*params</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.makefile_stderr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a file-like object associated with this channel&#8217;s stderr
+stream.   Only channels using <a class="reference internal" href="#paramiko.channel.Channel.exec_command" title="paramiko.channel.Channel.exec_command"><code class="xref py py-obj docutils literal"><span class="pre">exec_command</span></code></a> or <a class="reference internal" href="#paramiko.channel.Channel.invoke_shell" title="paramiko.channel.Channel.invoke_shell"><code class="xref py py-obj docutils literal"><span class="pre">invoke_shell</span></code></a>
+without a pty will ever have data on the stderr stream.</p>
+<p>The optional <code class="docutils literal"><span class="pre">mode</span></code> and <code class="docutils literal"><span class="pre">bufsize</span></code> arguments are interpreted the
+same way as by the built-in <code class="docutils literal"><span class="pre">file()</span></code> function in Python.  For a
+client, it only makes sense to open this file for reading.  For a
+server, it only makes sense to open this file for writing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#paramiko.channel.ChannelFile" title="paramiko.channel.ChannelFile"><code class="xref py py-obj docutils literal"><span class="pre">ChannelFile</span></code></a> object which can be used for Python file I/O.</td>
+</tr>
+</tbody>
+</table>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 1.1.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.recv">
+<code class="descname">recv</code><span class="sig-paren">(</span><em>nbytes</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.recv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receive data from the channel.  The return value is a string
+representing the data received.  The maximum amount of data to be
+received at once is specified by <code class="docutils literal"><span class="pre">nbytes</span></code>.  If a string of length zero
+is returned, the channel stream has closed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nbytes</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><em>int</em></a>) &#8211; maximum number of bytes to read.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">received data, as a <code class="xref py py-obj docutils literal"><span class="pre">bytes</span></code></td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Raises <a class="reference external" href="http://docs.python.org/2.6/library/socket.html#socket.timeout" title="(in Python v2.6)">socket.timeout</a>:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">if no data is ready before the timeout set by <a class="reference internal" href="#paramiko.channel.Channel.settimeout" title="paramiko.channel.Channel.settimeout"><code class="xref py py-obj docutils literal"><span class="pre">settimeout</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.recv_exit_status">
+<code class="descname">recv_exit_status</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.recv_exit_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the exit status from the process on the server.  This is
+mostly useful for retrieving the results of an <a class="reference internal" href="#paramiko.channel.Channel.exec_command" title="paramiko.channel.Channel.exec_command"><code class="xref py py-obj docutils literal"><span class="pre">exec_command</span></code></a>.
+If the command hasn&#8217;t finished yet, this method will wait until
+it does, or until the channel is closed.  If no exit status is
+provided by the server, -1 is returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the exit code (as an <a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a>) of the process on the server.</td>
+</tr>
+</tbody>
+</table>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 1.2.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.recv_ready">
+<code class="descname">recv_ready</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.recv_ready" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if data is buffered and ready to be read from this
+channel.  A <code class="docutils literal"><span class="pre">False</span></code> result does not mean that the channel has closed;
+it means you may need to wait before more data arrives.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">True</span></code> if a <a class="reference internal" href="#paramiko.channel.Channel.recv" title="paramiko.channel.Channel.recv"><code class="xref py py-obj docutils literal"><span class="pre">recv</span></code></a> call on this channel would immediately return
+at least one byte; <code class="docutils literal"><span class="pre">False</span></code> otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.recv_stderr">
+<code class="descname">recv_stderr</code><span class="sig-paren">(</span><em>nbytes</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.recv_stderr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receive data from the channel&#8217;s stderr stream.  Only channels using
+<a class="reference internal" href="#paramiko.channel.Channel.exec_command" title="paramiko.channel.Channel.exec_command"><code class="xref py py-obj docutils literal"><span class="pre">exec_command</span></code></a> or <a class="reference internal" href="#paramiko.channel.Channel.invoke_shell" title="paramiko.channel.Channel.invoke_shell"><code class="xref py py-obj docutils literal"><span class="pre">invoke_shell</span></code></a> without a pty will ever have data
+on the stderr stream.  The return value is a string representing the
+data received.  The maximum amount of data to be received at once is
+specified by <code class="docutils literal"><span class="pre">nbytes</span></code>.  If a string of length zero is returned, the
+channel stream has closed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nbytes</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><em>int</em></a>) &#8211; maximum number of bytes to read.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">received data as a <a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Raises <a class="reference external" href="http://docs.python.org/2.6/library/socket.html#socket.timeout" title="(in Python v2.6)">socket.timeout</a>:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">if no data is ready before the timeout set by
+<a class="reference internal" href="#paramiko.channel.Channel.settimeout" title="paramiko.channel.Channel.settimeout"><code class="xref py py-obj docutils literal"><span class="pre">settimeout</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 1.1.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.recv_stderr_ready">
+<code class="descname">recv_stderr_ready</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.recv_stderr_ready" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if data is buffered and ready to be read from this
+channel&#8217;s stderr stream.  Only channels using <a class="reference internal" href="#paramiko.channel.Channel.exec_command" title="paramiko.channel.Channel.exec_command"><code class="xref py py-obj docutils literal"><span class="pre">exec_command</span></code></a> or
+<a class="reference internal" href="#paramiko.channel.Channel.invoke_shell" title="paramiko.channel.Channel.invoke_shell"><code class="xref py py-obj docutils literal"><span class="pre">invoke_shell</span></code></a> without a pty will ever have data on the stderr
+stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">True</span></code> if a <a class="reference internal" href="#paramiko.channel.Channel.recv_stderr" title="paramiko.channel.Channel.recv_stderr"><code class="xref py py-obj docutils literal"><span class="pre">recv_stderr</span></code></a> call on this channel would immediately
+return at least one byte; <code class="docutils literal"><span class="pre">False</span></code> otherwise.</td>
+</tr>
+</tbody>
+</table>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 1.1.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.request_forward_agent">
+<code class="descname">request_forward_agent</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.request_forward_agent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request for a forward SSH Agent on this channel.
+This is only valid for an ssh-agent from OpenSSH !!!</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>handler</strong> (<em>function</em>) &#8211; a required handler to use for incoming SSH Agent connections</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if we are ok, else False (at that time we always return ok)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body">SSHException in case of channel problem.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.request_x11">
+<code class="descname">request_x11</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.request_x11" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request an x11 session on this channel.  If the server allows it,
+further x11 requests can be made from the server to the client,
+when an x11 application is run in a shell session.</p>
+<p>From <span class="target" id="index-0"></span><a class="rfc reference external" href="https://tools.ietf.org/html/rfc4254.html"><strong>RFC 4254</strong></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre>It is RECOMMENDED that the &#39;x11 authentication cookie&#39; that is
+sent be a fake, random cookie, and that the cookie be checked and
+replaced by the real cookie when a connection request is received.
+</pre></div>
+</div>
+<p>If you omit the auth_cookie, a new secure random 128-bit value will be
+generated, used, and returned.  You will need to use this value to
+verify incoming x11 requests and replace them with the actual local
+x11 cookie (which requires some knowledge of the x11 protocol).</p>
+<p>If a handler is passed in, the handler is called from another thread
+whenever a new x11 connection arrives.  The default handler queues up
+incoming x11 connections, which may be retrieved using
+<a class="reference internal" href="transport.html#paramiko.transport.Transport.accept" title="paramiko.transport.Transport.accept"><code class="xref py py-obj docutils literal"><span class="pre">Transport.accept</span></code></a>.  The handler&#8217;s calling signature is:</p>
+<div class="highlight-python"><div class="highlight"><pre>handler(channel: Channel, (address: str, port: int))
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>screen_number</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><em>int</em></a>) &#8211; the x11 screen number (0, 10, etc.)</li>
+<li><strong>auth_protocol</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; the name of the X11 authentication method used; if none is given,
+<code class="docutils literal"><span class="pre">&quot;MIT-MAGIC-COOKIE-1&quot;</span></code> is used</li>
+<li><strong>auth_cookie</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; hexadecimal string containing the x11 auth cookie; if none is
+given, a secure random 128-bit value is generated</li>
+<li><strong>single_connection</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#bool" title="(in Python v2.6)"><em>bool</em></a>) &#8211; if True, only a single x11 connection will be forwarded (by
+default, any number of x11 connections can arrive over this
+session)</li>
+<li><strong>handler</strong> (<em>function</em>) &#8211; an optional handler to use for incoming X11 connections</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the auth_cookie used</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.resize_pty">
+<code class="descname">resize_pty</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.resize_pty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resize the pseudo-terminal.  This can be used to change the width and
+height of the terminal emulation created in a previous <a class="reference internal" href="#paramiko.channel.Channel.get_pty" title="paramiko.channel.Channel.get_pty"><code class="xref py py-obj docutils literal"><span class="pre">get_pty</span></code></a> call.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>width</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><em>int</em></a>) &#8211; new width (in characters) of the terminal screen</li>
+<li><strong>height</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><em>int</em></a>) &#8211; new height (in characters) of the terminal screen</li>
+<li><strong>width_pixels</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><em>int</em></a>) &#8211; new width (in pixels) of the terminal screen</li>
+<li><strong>height_pixels</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><em>int</em></a>) &#8211; new height (in pixels) of the terminal screen</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Raises SSHException:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first last">if the request was rejected or the channel was closed</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.send">
+<code class="descname">send</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send data to the channel.  Returns the number of bytes sent, or 0 if
+the channel stream is closed.  Applications are responsible for
+checking that all data has been sent: if only some of the data was
+transmitted, the application needs to attempt delivery of the remaining
+data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>s</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; data to send</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">number of bytes actually sent, as an <a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Raises <a class="reference external" href="http://docs.python.org/2.6/library/socket.html#socket.timeout" title="(in Python v2.6)">socket.timeout</a>:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">if no data could be sent before the timeout set
+by <a class="reference internal" href="#paramiko.channel.Channel.settimeout" title="paramiko.channel.Channel.settimeout"><code class="xref py py-obj docutils literal"><span class="pre">settimeout</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.send_exit_status">
+<code class="descname">send_exit_status</code><span class="sig-paren">(</span><em>status</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.send_exit_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send the exit status of an executed command to the client.  (This
+really only makes sense in server mode.)  Many clients expect to
+get some sort of status code back from an executed command after
+it completes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>status</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><em>int</em></a>) &#8211; the exit code of the process</td>
+</tr>
+</tbody>
+</table>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 1.2.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.send_ready">
+<code class="descname">send_ready</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.send_ready" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if data can be written to this channel without blocking.
+This means the channel is either closed (so any write attempt would
+return immediately) or there is at least one byte of space in the
+outbound buffer. If there is at least one byte of space in the
+outbound buffer, a <a class="reference internal" href="#paramiko.channel.Channel.send" title="paramiko.channel.Channel.send"><code class="xref py py-obj docutils literal"><span class="pre">send</span></code></a> call will succeed immediately and return
+the number of bytes actually written.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">True</span></code> if a <a class="reference internal" href="#paramiko.channel.Channel.send" title="paramiko.channel.Channel.send"><code class="xref py py-obj docutils literal"><span class="pre">send</span></code></a> call on this channel would immediately succeed
+or fail</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.send_stderr">
+<code class="descname">send_stderr</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.send_stderr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send data to the channel on the &#8220;stderr&#8221; stream.  This is normally
+only used by servers to send output from shell commands &#8211; clients
+won&#8217;t use this.  Returns the number of bytes sent, or 0 if the channel
+stream is closed.  Applications are responsible for checking that all
+data has been sent: if only some of the data was transmitted, the
+application needs to attempt delivery of the remaining data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>s</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; data to send.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">number of bytes actually sent, as an <a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a>.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Raises <a class="reference external" href="http://docs.python.org/2.6/library/socket.html#socket.timeout" title="(in Python v2.6)">socket.timeout</a>:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">if no data could be sent before the timeout set by <a class="reference internal" href="#paramiko.channel.Channel.settimeout" title="paramiko.channel.Channel.settimeout"><code class="xref py py-obj docutils literal"><span class="pre">settimeout</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 1.1.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.sendall">
+<code class="descname">sendall</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.sendall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send data to the channel, without allowing partial results.  Unlike
+<a class="reference internal" href="#paramiko.channel.Channel.send" title="paramiko.channel.Channel.send"><code class="xref py py-obj docutils literal"><span class="pre">send</span></code></a>, this method continues to send data from the given string until
+either all data has been sent or an error occurs.  Nothing is returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>s</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; data to send.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://docs.python.org/2.6/library/socket.html#socket.timeout" title="(in Python v2.6)"><strong>socket.timeout</strong></a> &#8211; if sending stalled for longer than the timeout set by <a class="reference internal" href="#paramiko.channel.Channel.settimeout" title="paramiko.channel.Channel.settimeout"><code class="xref py py-obj docutils literal"><span class="pre">settimeout</span></code></a>.</li>
+<li><a class="reference external" href="http://docs.python.org/2.6/library/socket.html#socket.error" title="(in Python v2.6)"><strong>socket.error</strong></a> &#8211; if an error occurred before the entire string was sent.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the channel is closed while only part of the data has been
+sent, there is no way to determine how much data (if any) was sent.
+This is irritating, but identically follows Python&#8217;s API.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.sendall_stderr">
+<code class="descname">sendall_stderr</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.sendall_stderr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send data to the channel&#8217;s &#8220;stderr&#8221; stream, without allowing partial
+results.  Unlike <a class="reference internal" href="#paramiko.channel.Channel.send_stderr" title="paramiko.channel.Channel.send_stderr"><code class="xref py py-obj docutils literal"><span class="pre">send_stderr</span></code></a>, this method continues to send data
+from the given string until all data has been sent or an error occurs.
+Nothing is returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>s</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; data to send to the client as &#8220;stderr&#8221; output.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://docs.python.org/2.6/library/socket.html#socket.timeout" title="(in Python v2.6)"><strong>socket.timeout</strong></a> &#8211; if sending stalled for longer than the timeout set by <a class="reference internal" href="#paramiko.channel.Channel.settimeout" title="paramiko.channel.Channel.settimeout"><code class="xref py py-obj docutils literal"><span class="pre">settimeout</span></code></a>.</li>
+<li><a class="reference external" href="http://docs.python.org/2.6/library/socket.html#socket.error" title="(in Python v2.6)"><strong>socket.error</strong></a> &#8211; if an error occurred before the entire string was sent.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 1.1.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.set_combine_stderr">
+<code class="descname">set_combine_stderr</code><span class="sig-paren">(</span><em>combine</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.set_combine_stderr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set whether stderr should be combined into stdout on this channel.
+The default is <code class="docutils literal"><span class="pre">False</span></code>, but in some cases it may be convenient to
+have both streams combined.</p>
+<p>If this is <code class="docutils literal"><span class="pre">False</span></code>, and <a class="reference internal" href="#paramiko.channel.Channel.exec_command" title="paramiko.channel.Channel.exec_command"><code class="xref py py-obj docutils literal"><span class="pre">exec_command</span></code></a> is called (or <code class="docutils literal"><span class="pre">invoke_shell</span></code>
+with no pty), output to stderr will not show up through the <a class="reference internal" href="#paramiko.channel.Channel.recv" title="paramiko.channel.Channel.recv"><code class="xref py py-obj docutils literal"><span class="pre">recv</span></code></a>
+and <a class="reference internal" href="#paramiko.channel.Channel.recv_ready" title="paramiko.channel.Channel.recv_ready"><code class="xref py py-obj docutils literal"><span class="pre">recv_ready</span></code></a> calls.  You will have to use <a class="reference internal" href="#paramiko.channel.Channel.recv_stderr" title="paramiko.channel.Channel.recv_stderr"><code class="xref py py-obj docutils literal"><span class="pre">recv_stderr</span></code></a> and
+<a class="reference internal" href="#paramiko.channel.Channel.recv_stderr_ready" title="paramiko.channel.Channel.recv_stderr_ready"><code class="xref py py-obj docutils literal"><span class="pre">recv_stderr_ready</span></code></a> to get stderr output.</p>
+<p>If this is <code class="docutils literal"><span class="pre">True</span></code>, data will never show up via <a class="reference internal" href="#paramiko.channel.Channel.recv_stderr" title="paramiko.channel.Channel.recv_stderr"><code class="xref py py-obj docutils literal"><span class="pre">recv_stderr</span></code></a> or
+<a class="reference internal" href="#paramiko.channel.Channel.recv_stderr_ready" title="paramiko.channel.Channel.recv_stderr_ready"><code class="xref py py-obj docutils literal"><span class="pre">recv_stderr_ready</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>combine</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#bool" title="(in Python v2.6)"><em>bool</em></a>) &#8211; <code class="docutils literal"><span class="pre">True</span></code> if stderr output should be combined into stdout on this
+channel.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the previous setting (a <a class="reference external" href="http://docs.python.org/2.6/library/functions.html#bool" title="(in Python v2.6)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>).</td>
+</tr>
+</tbody>
+</table>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 1.1.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.set_name">
+<code class="descname">set_name</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.set_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set a name for this channel.  Currently it&#8217;s only used to set the name
+of the channel in logfile entries.  The name can be fetched with the
+<a class="reference internal" href="#paramiko.channel.Channel.get_name" title="paramiko.channel.Channel.get_name"><code class="xref py py-obj docutils literal"><span class="pre">get_name</span></code></a> method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; new channel name</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.setblocking">
+<code class="descname">setblocking</code><span class="sig-paren">(</span><em>blocking</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.setblocking" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set blocking or non-blocking mode of the channel: if <code class="docutils literal"><span class="pre">blocking</span></code> is 0,
+the channel is set to non-blocking mode; otherwise it&#8217;s set to blocking
+mode. Initially all channels are in blocking mode.</p>
+<p>In non-blocking mode, if a <a class="reference internal" href="#paramiko.channel.Channel.recv" title="paramiko.channel.Channel.recv"><code class="xref py py-obj docutils literal"><span class="pre">recv</span></code></a> call doesn&#8217;t find any data, or if a
+<a class="reference internal" href="#paramiko.channel.Channel.send" title="paramiko.channel.Channel.send"><code class="xref py py-obj docutils literal"><span class="pre">send</span></code></a> call can&#8217;t immediately dispose of the data, an error exception
+is raised. In blocking mode, the calls block until they can proceed. An
+EOF condition is considered &#8220;immediate data&#8221; for <a class="reference internal" href="#paramiko.channel.Channel.recv" title="paramiko.channel.Channel.recv"><code class="xref py py-obj docutils literal"><span class="pre">recv</span></code></a>, so if the
+channel is closed in the read direction, it will never block.</p>
+<p><code class="docutils literal"><span class="pre">chan.setblocking(0)</span></code> is equivalent to <code class="docutils literal"><span class="pre">chan.settimeout(0)</span></code>;
+<code class="docutils literal"><span class="pre">chan.setblocking(1)</span></code> is equivalent to <code class="docutils literal"><span class="pre">chan.settimeout(None)</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>blocking</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><em>int</em></a>) &#8211; 0 to set non-blocking mode; non-0 to set blocking mode.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.settimeout">
+<code class="descname">settimeout</code><span class="sig-paren">(</span><em>timeout</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.settimeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set a timeout on blocking read/write operations.  The <code class="docutils literal"><span class="pre">timeout</span></code>
+argument can be a nonnegative float expressing seconds, or <code class="docutils literal"><span class="pre">None</span></code>.  If
+a float is given, subsequent channel read/write operations will raise
+a timeout exception if the timeout period value has elapsed before the
+operation has completed.  Setting a timeout of <code class="docutils literal"><span class="pre">None</span></code> disables
+timeouts on socket operations.</p>
+<p><code class="docutils literal"><span class="pre">chan.settimeout(0.0)</span></code> is equivalent to <code class="docutils literal"><span class="pre">chan.setblocking(0)</span></code>;
+<code class="docutils literal"><span class="pre">chan.settimeout(None)</span></code> is equivalent to <code class="docutils literal"><span class="pre">chan.setblocking(1)</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#float" title="(in Python v2.6)"><em>float</em></a>) &#8211; seconds to wait for a pending read/write operation before raising
+<code class="docutils literal"><span class="pre">socket.timeout</span></code>, or <code class="docutils literal"><span class="pre">None</span></code> for no timeout.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.shutdown">
+<code class="descname">shutdown</code><span class="sig-paren">(</span><em>how</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.shutdown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shut down one or both halves of the connection.  If <code class="docutils literal"><span class="pre">how</span></code> is 0,
+further receives are disallowed.  If <code class="docutils literal"><span class="pre">how</span></code> is 1, further sends
+are disallowed.  If <code class="docutils literal"><span class="pre">how</span></code> is 2, further sends and receives are
+disallowed.  This closes the stream in one or both directions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>how</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><em>int</em></a>) &#8211; <dl class="docutils">
+<dt>0 (stop receiving), 1 (stop sending), or 2 (stop receiving and</dt>
+<dd>sending).</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.shutdown_read">
+<code class="descname">shutdown_read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.shutdown_read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shutdown the receiving side of this socket, closing the stream in
+the incoming direction.  After this call, future reads on this
+channel will fail instantly.  This is a convenience method, equivalent
+to <code class="docutils literal"><span class="pre">shutdown(0)</span></code>, for people who don&#8217;t make it a habit to
+memorize unix constants from the 1970s.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 1.2.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.channel.Channel.shutdown_write">
+<code class="descname">shutdown_write</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.Channel.shutdown_write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shutdown the sending side of this socket, closing the stream in
+the outgoing direction.  After this call, future writes on this
+channel will fail instantly.  This is a convenience method, equivalent
+to <code class="docutils literal"><span class="pre">shutdown(1)</span></code>, for people who don&#8217;t make it a habit to
+memorize unix constants from the 1970s.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 1.2.</span></p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="paramiko.channel.ChannelFile">
+<em class="property">class </em><code class="descclassname">paramiko.channel.</code><code class="descname">ChannelFile</code><span class="sig-paren">(</span><em>channel</em>, <em>mode='r'</em>, <em>bufsize=-1</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.ChannelFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>A file-like wrapper around <a class="reference internal" href="#paramiko.channel.Channel" title="paramiko.channel.Channel"><code class="xref py py-obj docutils literal"><span class="pre">Channel</span></code></a>.  A ChannelFile is created by calling
+<a class="reference internal" href="#paramiko.channel.Channel.makefile" title="paramiko.channel.Channel.makefile"><code class="xref py py-obj docutils literal"><span class="pre">Channel.makefile</span></code></a>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">To correctly emulate the file object created from a socket&#8217;s <a class="reference external" href="http://docs.python.org/2.6/library/socket.html#socket.socket.makefile" title="(in Python v2.6)"><code class="xref py py-obj docutils literal"><span class="pre">makefile</span></code></a> method, a <a class="reference internal" href="#paramiko.channel.Channel" title="paramiko.channel.Channel"><code class="xref py py-obj docutils literal"><span class="pre">Channel</span></code></a> and its
+<a class="reference internal" href="#paramiko.channel.ChannelFile" title="paramiko.channel.ChannelFile"><code class="xref py py-obj docutils literal"><span class="pre">ChannelFile</span></code></a> should be able to be closed or garbage-collected
+independently. Currently, closing the <a class="reference internal" href="#paramiko.channel.ChannelFile" title="paramiko.channel.ChannelFile"><code class="xref py py-obj docutils literal"><span class="pre">ChannelFile</span></code></a> does nothing but
+flush the buffer.</p>
+</div>
+<dl class="method">
+<dt id="paramiko.channel.ChannelFile.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.ChannelFile.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a string representation of this object, for debugging.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="paramiko.channel.open_only">
+<code class="descclassname">paramiko.channel.</code><code class="descname">open_only</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.channel.open_only" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator for <a class="reference internal" href="#paramiko.channel.Channel" title="paramiko.channel.Channel"><code class="xref py py-obj docutils literal"><span class="pre">Channel</span></code></a> methods which performs an openness check.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Raises SSHException:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">If the wrapped method is called on an unopened <a class="reference internal" href="#paramiko.channel.Channel" title="paramiko.channel.Channel"><code class="xref py py-obj docutils literal"><span class="pre">Channel</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Paramiko</a></h1>
+
+
+
+<p class="blurb">A Python implementation of SSHv2.</p>
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=paramiko&repo=paramiko&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/paramiko/paramiko">
+    <img
+        alt="https://secure.travis-ci.org/paramiko/paramiko.png?branch=master"
+        src="https://secure.travis-ci.org/paramiko/paramiko.png?branch=master"
+    >
+</a>
+</p>
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="message.html">Message</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packet.html">Packetizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transport.html">Transport</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="agent.html">SSH agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hostkeys.html">Host keys / <code class="docutils literal"><span class="pre">known_hosts</span></code> files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keys.html">Key handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssh_gss.html">GSS-API authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kex_gss.html">GSS-API key exchange</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="proxy.html"><code class="docutils literal"><span class="pre">ProxyCommand</span></code> support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Server implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sftp.html">SFTP</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="buffered_pipe.html">Buffered pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">Buffered files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipe.html">Cross-platform pipe implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssh_exception.html">Exceptions</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://www.paramiko.org">Main website</a></li>
+    
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015 Jeff Forcier.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="../_sources/api/channel.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18486793-2']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

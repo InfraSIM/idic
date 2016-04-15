@@ -1,0 +1,698 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>GSS-API authentication &mdash; Paramiko  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Paramiko  documentation" href="../index.html" />
+    <link rel="next" title="GSS-API key exchange" href="kex_gss.html" />
+    <link rel="prev" title="Key handling" href="keys.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-paramiko.ssh_gss">
+<span id="gss-api-authentication"></span><h1>GSS-API authentication<a class="headerlink" href="#module-paramiko.ssh_gss" title="Permalink to this headline">¶</a></h1>
+<p>This module provides GSS-API / SSPI  authentication as defined in <span class="target" id="index-0"></span><a class="rfc reference external" href="https://tools.ietf.org/html/rfc4462.html"><strong>RFC 4462</strong></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Credential delegation is not supported in server mode.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="kex_gss.html"><em>GSS-API key exchange</em></a></p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 1.15.</span></p>
+</div>
+<dl class="function">
+<dt id="paramiko.ssh_gss.GSSAuth">
+<code class="descclassname">paramiko.ssh_gss.</code><code class="descname">GSSAuth</code><span class="sig-paren">(</span><em>auth_method</em>, <em>gss_deleg_creds=True</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_gss.GSSAuth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provide SSH2 GSS-API / SSPI authentication.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>auth_method</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The name of the SSH authentication mechanism
+(gssapi-with-mic or gss-keyex)</li>
+<li><strong>gss_deleg_creds</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#bool" title="(in Python v2.6)"><em>bool</em></a>) &#8211; Delegate client credentials or not.
+We delegate credentials by default.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Either an <a class="reference internal" href="#paramiko.ssh_gss._SSH_GSSAPI" title="paramiko.ssh_gss._SSH_GSSAPI"><code class="xref py py-obj docutils literal"><span class="pre">_SSH_GSSAPI</span></code></a> (Unix) object or an
+<a class="reference internal" href="#paramiko.ssh_gss._SSH_SSPI" title="paramiko.ssh_gss._SSH_SSPI"><code class="xref py py-obj docutils literal"><span class="pre">_SSH_SSPI</span></code></a> (Windows) object</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Object</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Raises ImportError:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first">If no GSS-API / SSPI module could be imported.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">See:</th><td class="field-body"><p class="first"><a class="reference external" href="http://www.ietf.org/rfc/rfc4462.txt">RFC 4462</a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">Check for the available API and return either an <a class="reference internal" href="#paramiko.ssh_gss._SSH_GSSAPI" title="paramiko.ssh_gss._SSH_GSSAPI"><code class="xref py py-obj docutils literal"><span class="pre">_SSH_GSSAPI</span></code></a>
+(MIT GSSAPI) object or an <a class="reference internal" href="#paramiko.ssh_gss._SSH_SSPI" title="paramiko.ssh_gss._SSH_SSPI"><code class="xref py py-obj docutils literal"><span class="pre">_SSH_SSPI</span></code></a> (MS SSPI) object. If you
+get python-gssapi working on Windows, python-gssapi
+will be used and a <a class="reference internal" href="#paramiko.ssh_gss._SSH_GSSAPI" title="paramiko.ssh_gss._SSH_GSSAPI"><code class="xref py py-obj docutils literal"><span class="pre">_SSH_GSSAPI</span></code></a> object will be returned.
+If there is no supported API available,
+<code class="docutils literal"><span class="pre">None</span></code> will be returned.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="paramiko.ssh_gss._SSH_GSSAuth">
+<em class="property">class </em><code class="descclassname">paramiko.ssh_gss.</code><code class="descname">_SSH_GSSAuth</code><span class="sig-paren">(</span><em>auth_method</em>, <em>gss_deleg_creds</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_gss._SSH_GSSAuth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contains the shared variables and methods of <a class="reference internal" href="#paramiko.ssh_gss._SSH_GSSAPI" title="paramiko.ssh_gss._SSH_GSSAPI"><code class="xref py py-obj docutils literal"><span class="pre">_SSH_GSSAPI</span></code></a> and
+<a class="reference internal" href="#paramiko.ssh_gss._SSH_SSPI" title="paramiko.ssh_gss._SSH_SSPI"><code class="xref py py-obj docutils literal"><span class="pre">_SSH_SSPI</span></code></a>.</p>
+<dl class="method">
+<dt id="paramiko.ssh_gss._SSH_GSSAuth.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>auth_method</em>, <em>gss_deleg_creds</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_gss._SSH_GSSAuth.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>auth_method</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The name of the SSH authentication mechanism
+(gssapi-with-mic or gss-keyex)</li>
+<li><strong>gss_deleg_creds</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#bool" title="(in Python v2.6)"><em>bool</em></a>) &#8211; Delegate client credentials or not</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.ssh_gss._SSH_GSSAuth.set_service">
+<code class="descname">set_service</code><span class="sig-paren">(</span><em>service</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_gss._SSH_GSSAuth.set_service" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is just a setter to use a non default service.
+I added this method, because RFC 4462 doesn&#8217;t specify &#8220;ssh-connection&#8221;
+as the only service value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>service</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The desired SSH service</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Void</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.ssh_gss._SSH_GSSAuth.set_username">
+<code class="descname">set_username</code><span class="sig-paren">(</span><em>username</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_gss._SSH_GSSAuth.set_username" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setter for C{username}. If GSS-API Key Exchange is performed, the
+username is not set by C{ssh_init_sec_context}.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>username</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The name of the user who attempts to login</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Void</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.ssh_gss._SSH_GSSAuth.ssh_gss_oids">
+<code class="descname">ssh_gss_oids</code><span class="sig-paren">(</span><em>mode='client'</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_gss._SSH_GSSAuth.ssh_gss_oids" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method returns a single OID, because we only support the
+Kerberos V5 mechanism.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mode</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; Client for client mode and server for server mode</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A byte sequence containing the number of supported
+OIDs, the length of the OID and the actual OID encoded with
+DER</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Bytes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Note:</th><td class="field-body">In server mode we just return the OID length and the DER encoded
+OID.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.ssh_gss._SSH_GSSAuth.ssh_check_mech">
+<code class="descname">ssh_check_mech</code><span class="sig-paren">(</span><em>desired_mech</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_gss._SSH_GSSAuth.ssh_check_mech" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the given OID is the Kerberos V5 OID (server mode).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>desired_mech</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The desired GSS-API mechanism of the client</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">True</span></code> if the given OID is supported, otherwise C{False}</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Boolean</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="paramiko.ssh_gss._SSH_GSSAuth.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#paramiko.ssh_gss._SSH_GSSAuth.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="paramiko.ssh_gss._SSH_GSSAPI">
+<em class="property">class </em><code class="descclassname">paramiko.ssh_gss.</code><code class="descname">_SSH_GSSAPI</code><span class="sig-paren">(</span><em>auth_method</em>, <em>gss_deleg_creds</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_gss._SSH_GSSAPI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implementation of the GSS-API MIT Kerberos Authentication for SSH2.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#paramiko.ssh_gss.GSSAuth" title="paramiko.ssh_gss.GSSAuth"><code class="xref py py-obj docutils literal"><span class="pre">GSSAuth</span></code></a></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="paramiko.ssh_gss._SSH_GSSAPI.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>auth_method</em>, <em>gss_deleg_creds</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_gss._SSH_GSSAPI.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>auth_method</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The name of the SSH authentication mechanism
+(gssapi-with-mic or gss-keyex)</li>
+<li><strong>gss_deleg_creds</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#bool" title="(in Python v2.6)"><em>bool</em></a>) &#8211; Delegate client credentials or not</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.ssh_gss._SSH_GSSAPI.ssh_init_sec_context">
+<code class="descname">ssh_init_sec_context</code><span class="sig-paren">(</span><em>target</em>, <em>desired_mech=None</em>, <em>username=None</em>, <em>recv_token=None</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_gss._SSH_GSSAPI.ssh_init_sec_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a GSS-API context.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>username</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The name of the user who attempts to login</li>
+<li><strong>target</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The hostname of the target to connect to</li>
+<li><strong>desired_mech</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The negotiated GSS-API mechanism
+(&#8220;pseudo negotiated&#8221; mechanism, because we
+support just the krb5 mechanism :-))</li>
+<li><strong>recv_token</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The GSS-API token received from the Server</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Raises SSHException:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first">Is raised if the desired mechanism of the client
+is not supported</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="docutils literal"><span class="pre">String</span></code> if the GSS-API has returned a token or <code class="docutils literal"><span class="pre">None</span></code> if
+no token was returned</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">String or None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.ssh_gss._SSH_GSSAPI.ssh_get_mic">
+<code class="descname">ssh_get_mic</code><span class="sig-paren">(</span><em>session_id</em>, <em>gss_kex=False</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_gss._SSH_GSSAPI.ssh_get_mic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the MIC token for a SSH2 message.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>session_id</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The SSH session ID</li>
+<li><strong>gss_kex</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#bool" title="(in Python v2.6)"><em>bool</em></a>) &#8211; Generate the MIC for GSS-API Key Exchange or not</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">gssapi-with-mic:
+Returns the MIC token from GSS-API for the message we created
+with <code class="docutils literal"><span class="pre">_ssh_build_mic</span></code>.
+gssapi-keyex:
+Returns the MIC token from GSS-API with the SSH session ID as
+message.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">String</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal"><span class="pre">_ssh_build_mic</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.ssh_gss._SSH_GSSAPI.ssh_accept_sec_context">
+<code class="descname">ssh_accept_sec_context</code><span class="sig-paren">(</span><em>hostname</em>, <em>recv_token</em>, <em>username=None</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_gss._SSH_GSSAPI.ssh_accept_sec_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accept a GSS-API context (server mode).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>hostname</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The servers hostname</li>
+<li><strong>username</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The name of the user who attempts to login</li>
+<li><strong>recv_token</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The GSS-API Token received from the server,
+if it&#8217;s not the initial call.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="docutils literal"><span class="pre">String</span></code> if the GSS-API has returned a token or <code class="docutils literal"><span class="pre">None</span></code>
+if no token was returned</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">String or None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.ssh_gss._SSH_GSSAPI.ssh_check_mic">
+<code class="descname">ssh_check_mic</code><span class="sig-paren">(</span><em>mic_token</em>, <em>session_id</em>, <em>username=None</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_gss._SSH_GSSAPI.ssh_check_mic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify the MIC token for a SSH2 message.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>mic_token</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The MIC token received from the client</li>
+<li><strong>session_id</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The SSH session ID</li>
+<li><strong>username</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The name of the user who attempts to login</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None if the MIC check was successful</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Raises gssapi.GSSException:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first last">if the MIC check failed</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="paramiko.ssh_gss._SSH_GSSAPI.credentials_delegated">
+<code class="descname">credentials_delegated</code><a class="headerlink" href="#paramiko.ssh_gss._SSH_GSSAPI.credentials_delegated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if credentials are delegated (server mode).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">True</span></code> if credentials are delegated, otherwise <code class="docutils literal"><span class="pre">False</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python.org/2.6/library/functions.html#bool" title="(in Python v2.6)">bool</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.ssh_gss._SSH_GSSAPI.save_client_creds">
+<code class="descname">save_client_creds</code><span class="sig-paren">(</span><em>client_token</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_gss._SSH_GSSAPI.save_client_creds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the Client token in a file. This is used by the SSH server
+to store the client credentials if credentials are delegated
+(server mode).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client_token</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The GSS-API token received form the client</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Raises NotImplementedError:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Credential delegation is currently not
+supported in server mode</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="paramiko.ssh_gss._SSH_SSPI">
+<em class="property">class </em><code class="descclassname">paramiko.ssh_gss.</code><code class="descname">_SSH_SSPI</code><span class="sig-paren">(</span><em>auth_method</em>, <em>gss_deleg_creds</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_gss._SSH_SSPI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implementation of the Microsoft SSPI Kerberos Authentication for SSH2.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#paramiko.ssh_gss.GSSAuth" title="paramiko.ssh_gss.GSSAuth"><code class="xref py py-obj docutils literal"><span class="pre">GSSAuth</span></code></a></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="paramiko.ssh_gss._SSH_SSPI.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>auth_method</em>, <em>gss_deleg_creds</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_gss._SSH_SSPI.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>auth_method</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The name of the SSH authentication mechanism
+(gssapi-with-mic or gss-keyex)</li>
+<li><strong>gss_deleg_creds</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#bool" title="(in Python v2.6)"><em>bool</em></a>) &#8211; Delegate client credentials or not</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.ssh_gss._SSH_SSPI.ssh_init_sec_context">
+<code class="descname">ssh_init_sec_context</code><span class="sig-paren">(</span><em>target</em>, <em>desired_mech=None</em>, <em>username=None</em>, <em>recv_token=None</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_gss._SSH_SSPI.ssh_init_sec_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a SSPI context.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>username</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The name of the user who attempts to login</li>
+<li><strong>target</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The FQDN of the target to connect to</li>
+<li><strong>desired_mech</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The negotiated SSPI mechanism
+(&#8220;pseudo negotiated&#8221; mechanism, because we
+support just the krb5 mechanism :-))</li>
+<li><strong>recv_token</strong> &#8211; The SSPI token received from the Server</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Raises SSHException:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first">Is raised if the desired mechanism of the client
+is not supported</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="docutils literal"><span class="pre">String</span></code> if the SSPI has returned a token or <code class="docutils literal"><span class="pre">None</span></code> if
+no token was returned</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">String or None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.ssh_gss._SSH_SSPI.ssh_get_mic">
+<code class="descname">ssh_get_mic</code><span class="sig-paren">(</span><em>session_id</em>, <em>gss_kex=False</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_gss._SSH_SSPI.ssh_get_mic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the MIC token for a SSH2 message.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>session_id</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The SSH session ID</li>
+<li><strong>gss_kex</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#bool" title="(in Python v2.6)"><em>bool</em></a>) &#8211; Generate the MIC for Key Exchange with SSPI or not</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">gssapi-with-mic:
+Returns the MIC token from SSPI for the message we created
+with <code class="docutils literal"><span class="pre">_ssh_build_mic</span></code>.
+gssapi-keyex:
+Returns the MIC token from SSPI with the SSH session ID as
+message.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">String</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal"><span class="pre">_ssh_build_mic</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.ssh_gss._SSH_SSPI.ssh_accept_sec_context">
+<code class="descname">ssh_accept_sec_context</code><span class="sig-paren">(</span><em>hostname</em>, <em>username</em>, <em>recv_token</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_gss._SSH_SSPI.ssh_accept_sec_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accept a SSPI context (server mode).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>hostname</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The servers FQDN</li>
+<li><strong>username</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The name of the user who attempts to login</li>
+<li><strong>recv_token</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The SSPI Token received from the server,
+if it&#8217;s not the initial call.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="docutils literal"><span class="pre">String</span></code> if the SSPI has returned a token or <code class="docutils literal"><span class="pre">None</span></code> if
+no token was returned</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">String or None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.ssh_gss._SSH_SSPI.ssh_check_mic">
+<code class="descname">ssh_check_mic</code><span class="sig-paren">(</span><em>mic_token</em>, <em>session_id</em>, <em>username=None</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_gss._SSH_SSPI.ssh_check_mic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify the MIC token for a SSH2 message.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>mic_token</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The MIC token received from the client</li>
+<li><strong>session_id</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The SSH session ID</li>
+<li><strong>username</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The name of the user who attempts to login</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None if the MIC check was successful</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Raises sspi.error:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first last">if the MIC check failed</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="paramiko.ssh_gss._SSH_SSPI.credentials_delegated">
+<code class="descname">credentials_delegated</code><a class="headerlink" href="#paramiko.ssh_gss._SSH_SSPI.credentials_delegated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if credentials are delegated (server mode).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">True</span></code> if credentials are delegated, otherwise <code class="docutils literal"><span class="pre">False</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Boolean</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="paramiko.ssh_gss._SSH_SSPI.save_client_creds">
+<code class="descname">save_client_creds</code><span class="sig-paren">(</span><em>client_token</em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_gss._SSH_SSPI.save_client_creds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the Client token in a file. This is used by the SSH server
+to store the client credentails if credentials are delegated
+(server mode).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client_token</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; The SSPI token received form the client</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Raises NotImplementedError:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Credential delegation is currently not
+supported in server mode</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Paramiko</a></h1>
+
+
+
+<p class="blurb">A Python implementation of SSHv2.</p>
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=paramiko&repo=paramiko&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/paramiko/paramiko">
+    <img
+        alt="https://secure.travis-ci.org/paramiko/paramiko.png?branch=master"
+        src="https://secure.travis-ci.org/paramiko/paramiko.png?branch=master"
+    >
+</a>
+</p>
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="message.html">Message</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packet.html">Packetizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transport.html">Transport</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="agent.html">SSH agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hostkeys.html">Host keys / <code class="docutils literal"><span class="pre">known_hosts</span></code> files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keys.html">Key handling</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">GSS-API authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kex_gss.html">GSS-API key exchange</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="proxy.html"><code class="docutils literal"><span class="pre">ProxyCommand</span></code> support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Server implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sftp.html">SFTP</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="buffered_pipe.html">Buffered pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">Buffered files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipe.html">Cross-platform pipe implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssh_exception.html">Exceptions</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://www.paramiko.org">Main website</a></li>
+    
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015 Jeff Forcier.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="../_sources/api/ssh_gss.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18486793-2']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

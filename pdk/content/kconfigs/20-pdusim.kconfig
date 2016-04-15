@@ -1,0 +1,43 @@
+menu "PDU Simulation"
+
+config CONFIG_PDU_SIMULATION
+        bool "PDU simulation"
+        default n
+        help
+                Enable PDU simulation
+
+config CONFIG_PKG_vpduserv
+        bool "vPDU Service"
+        depends CONFIG_PDU_SIMULATION
+        default y 
+        help
+                Enable vPDU service
+
+config CONFIG_GIT_VPDU_URL
+        string "Git URL"
+        depends CONFIG_PKG_vpduserv
+        default "ssh://git@hwstashprd01.isus.emc.com:7999/idic/vpduserv.git"
+        help
+                Set the vpdu Git repo URL
+
+config CONFIG_PKG_pyasn
+        bool "pyasn"
+        depends CONFIG_PDU_SIMULATION
+        default n
+        help
+                Enable pyasn
+
+config CONFIG_PKG_pysnmp
+        bool "pysnmp"
+        depends CONFIG_PDU_SIMULATION
+        default n
+        help
+                Enable pysnmp
+
+config CONFIG_PKG_snmpsim
+        bool "snmpsim"
+        depends CONFIG_PDU_SIMULATION
+        help
+                Enable snmp simulator
+
+endmenu
