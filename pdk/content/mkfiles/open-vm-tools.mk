@@ -2,11 +2,11 @@
 
 include ${BASE}/.config
 PKG:=open-vm-tools
-VERSION:=10.0.0-3000743
+VERSION:=10.0.7-3227872
 DIR:=${PKG}-${VERSION}
 
 OPENVMTOOLS_SRC_URL = http://security.ubuntu.com/ubuntu/pool/main/o/open-vm-tools
-OPENVMTOOLS_SRC_PKG = open-vm-tools_10.0.0-3000743.orig.tar.gz
+OPENVMTOOLS_SRC_PKG = open-vm-tools_${VERSION}.orig.tar.gz
 OPENVMTOOLS_CONF_OPTS = --without-icu --without-x --without-gtk2 --without-gtkmm --without-kernel-modules --without-pam --without-procps --without-root-privileges --without-xerces --without-ssl --without-xmlsecurity --disable-deploypkg --disable-multimon --disable-tests
 
 .PHONY: all
