@@ -7,7 +7,7 @@ VERSION:=1.23.2
 DIR:=${PKG}-${VERSION}
 LINKS=`xargs < ${DIR}/busybox.links`
 
-SBINSCRIPTS:=boardinfo history service shutdown
+SBINSCRIPTS:=boardinfo history service shutdown ssdpd
 
 ifeq (${CONFIG_USE_BUSYBOX_SOURCE}, y)
 BUSYBOXURL = ${CONFIG_BUSYBOX_URL}
