@@ -92,32 +92,34 @@ if [ -e ${QEMU_SYSTEM_X86_64} ]; then
     for d in $disks
     do
         [ $d == "sda" ] && continue
+        #qemu will operate the raw disk
+        DRIVE_OPTION=${DRIVE_OPTION}"-drive file=/dev/${d},if=none,id=${d} -device ide-drive,drive=${d},bus=ahci.${index} "
 
-        format_and_mount_disk $d
+        #format_and_mount_disk $d
 
         # Get disk size
-        size_sector=$(cat /sys/block/${d}/size)
+        #size_sector=$(cat /sys/block/${d}/size)
 
-        size=$(expr ${size_sector} / 2 / 1024)
+        #size=$(expr ${size_sector} / 2 / 1024)
 
-        do_log "Disk ${d} size: $size MB"
+        #do_log "Disk ${d} size: $size MB"
 
-        [ ! -e ${target_mount_point}/${d}.img ] && qemu-img create -f raw ${target_mount_point}/${d}.img ${size}M
+        #[ ! -e ${target_mount_point}/${d}.img ] && qemu-img create -f raw ${target_mount_point}/${d}.img ${size}M
         
-        mod=`expr $disk_index \% ${MAX_DISK_INDEX_PER_CONTROLLER}`
-        if [ $mod -eq 0 ] && [ $index -ne 0 ];then
-        	index=0
-        	let controller_index+=1
-        fi
+        #mod=`expr $disk_index \% ${MAX_DISK_INDEX_PER_CONTROLLER}`
+        #if [ $mod -eq 0 ] && [ $index -ne 0 ];then
+       # 	index=0
+       # 	let controller_index+=1
+       # fi
         # Compose drive option for Qemu
-        case $CONTROLLER_TYPE in
-            lsi|megasas)
-                DRIVE_OPTION=${DRIVE_OPTION}"-drive file=${target_mount_point}/${d}.img,if=none,index=${disk_index},media=disk,id=${d} -device scsi-disk,bus=scsi${controller_index}.0,scsi-id=${index},drive=${d},id=device-scsi${controller_index}${index} "
-                ;;
-            ahci)
-                DRIVE_OPTION=${DRIVE_OPTION}"-drive file=${target_mount_point}/${d}.img,if=none,id=${d} -device ide-hd,bus=ahci${controller_index}.${disk_index},drive=${d},id=device-ahci${controller_index}-${disk_index} "
-                ;;
-        esac
+        #case $CONTROLLER_TYPE in
+        #    lsi|megasas)
+        #        DRIVE_OPTION=${DRIVE_OPTION}"-drive file=${target_mount_point}/${d}.img,if=none,index=${disk_index},media=disk,id=${d} -device scsi-disk,bus=scsi${controller_index}.0,scsi-id=${index},drive=${d},id=device-scsi${controller_index}${index} "
+        #        ;;
+        #    ahci)
+        #        DRIVE_OPTION=${DRIVE_OPTION}"-drive file=${target_mount_point}/${d}.img,if=none,id=${d} -device ide-hd,bus=ahci${controller_index}.${disk_index},drive=${d},id=device-ahci${controller_index}-${disk_index} "
+        #        ;;
+        #esac
         let index+=1
         let disk_index+=1
     done
@@ -131,7 +133,7 @@ if [ -e ${QEMU_SYSTEM_X86_64} ]; then
                 CONTROLLER_OPTION=${CONTROLLER_OPTION}"-device ${CONTROLLER_TYPE},id=scsi${i} "
                 ;;
             ahci)
-                CONTROLLER_OPTION=${CONTROLLER_OPTION}"-device ${CONTROLLER_TYPE},id=ahci${i} "
+                CONTROLLER_OPTION=${CONTROLLER_OPTION}"-device ${CONTROLLER_TYPE},id=ahci "
                 ;;
         esac
     done
