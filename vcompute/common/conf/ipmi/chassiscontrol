@@ -105,7 +105,7 @@ do_set() {
             do_log "receive reset signal parm=$parm val=$val"
             pid=`pidof qemu-system-x86_64`
             kill -9 $pid
-            /etc/ipmi/startcmd &
+            /etc/ipmi/startcmd
             ;;
 	    boot)
             do_log "receive boot signal parm=$parm val=$val"
