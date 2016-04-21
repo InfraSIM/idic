@@ -1,0 +1,41 @@
+#/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import time, socket, uuid, os
+
+def send_ssdp_notify(uuid, ipaddr, host):
+    group = ("239.255.255.250", 1900)
+    message = "\r\n".join([
+        'NOTIFY * HTTP/1.1',
+        'Host: 239.255.255.250:1900',
+        'Cache-Control: max-age=4',
+        'Location: {lo}',
+        'NT: uuid: {uuid}',
+        'NTS: ssdp:alive',
+        'SERVER: {host}',
+        'USN: uuid:{uuid}::{host}'])
+
+    message = message.format(lo=ipaddr, uuid=uuid, host=host)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 64)
+    sock.sendto(message, group)
+    sock.close()
+
+if __name__ == '__main__':
+    uuid = str(uuid.uuid1())
+    
+    #Get br0 ip address
+    f = os.popen('ifconfig br0 | grep "inet\ addr" | cut -d: -f2 | cut -d" " -f1')
+    ip=f.read()[:-1]
+
+    #get vnode name    
+    f = os.popen('cat /etc/hostname')
+    host=f.read()[:-1]
+
+    while True:
+        send_ssdp_notify(uuid, ip, host)
+        time.sleep(8)
+
+
+    
