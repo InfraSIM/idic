@@ -132,7 +132,7 @@ if [ -e ${QEMU_SYSTEM_X86_64} ]; then
                 CONTROLLER_OPTION=${CONTROLLER_OPTION}"-device ${CONTROLLER_TYPE},id=scsi${i} "
                 ;;
             ahci)
-                CONTROLLER_OPTION=${CONTROLLER_OPTION}"-device ${CONTROLLER_TYPE},id=ahci{i} "
+                CONTROLLER_OPTION=${CONTROLLER_OPTION}"-device ${CONTROLLER_TYPE},id=ahci${i} "
                 ;;
         esac
     done
