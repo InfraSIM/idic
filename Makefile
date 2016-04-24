@@ -50,7 +50,7 @@ setupenv:
 	Ubuntu) apt-get update -q; \
 		apt-get install -y libncurses5 libncurses5-dev mkisofs zlib1g-dev \
 		libglib2.0-dev autoconf pkg-config libtool libpopt-dev libssl-dev python-dev nsis \
-		libdumbnet1 libdumbnet-dev python-dev bison flex tclsh; \
+		libdumbnet1 libdumbnet-dev python-dev python-setuptools bison flex tclsh bc docbook-to-man docbook-utils; \
 		cp -f pdk/linux/embedded_rootfs/scripts/installkernel /sbin/installkernel-idic; ;; \
 	*) echo "Unsupported platform"; ;; \
 	esac
