@@ -31,4 +31,4 @@ ${DIR}:
 		popd"; \
 	fi;
 	@echo "configure qemu"
-	@cd ${DIR} && ./configure --target-list="${CONFIG_ARCH}-linux-user ${CONFIG_ARCH}-softmmu" --prefix=/usr --disable-smartcard-nss --disable-seccomp --disable-glusterfs --disable-tpm --disable-vhdx --disable-bluez --disable-fdt --disable-gtk --disable-cocoa --disable-sdl --without-system-pixman
+	@cd ${DIR} && ./configure --target-list="${CONFIG_ARCH}-linux-user ${CONFIG_ARCH}-softmmu" --prefix=/usr --disable-smartcard-nss --disable-seccomp --disable-glusterfs --disable-werror --disable-tpm --disable-vhdx --disable-bluez --disable-fdt --disable-gtk --disable-cocoa --disable-sdl --without-system-pixman
