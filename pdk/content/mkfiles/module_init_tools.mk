@@ -3,7 +3,7 @@
 include ${BASE}/.config
 
 PKG:=module-init-tools
-VERSION:=3.9
+VERSION:=3.15
 DIR:=${PKG}-${VERSION}
 
 .PHONY: all
