@@ -12,6 +12,9 @@ KERNELPRE=${shell echo ${VER} | cut -c1-3}
 ifeq ($(findstring 3.,$(KERNELPRE)), 3.)
    KERNELPRE=3.x
 endif
+ifeq ($(findstring 4.,$(KERNELPRE)), 4.)
+   KERNELPRE=4.x
+endif
 
 KERNELURL=http://www.kernel.org/pub/linux/kernel/v${KERNELPRE}/
 
