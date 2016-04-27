@@ -148,7 +148,7 @@ if [ -e ${QEMU_SYSTEM_X86_64} ]; then
 	   VNETMAC="52:54:BE:EF:${SUFFIX}"
 
        [ ! -d /etc/qemu ] && mkdir -p /etc/qemu
-       [ ! -e /etc/qemu/bridge.conf ] && {touch /etc/qemu/bridge.conf; chmod 0640 /etc/qemu/bridge.conf}
+       [ ! -e /etc/qemu/bridge.conf ] && { touch /etc/qemu/bridge.conf; chmod 0640 /etc/qemu/bridge.conf; }
 
        if ! grep -qs "br${nic_index}" /etc/qemu/bridge.conf ;then
            echo "allow br${nic_index}" >> /etc/qemu/bridge.conf
