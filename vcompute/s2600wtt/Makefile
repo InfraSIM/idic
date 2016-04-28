@@ -1,6 +1,6 @@
 export BASE := $(shell pwd)
 VCOMPUTE_BASE = ${BASE}/..
-TARGETNAME = hydra
+TARGETNAME = s2600wtt
 export LINUX_DIR = ${VCOMPUTE_BASE}/../pdk/linux
 export RELEASE_DIR = ${LINUX_DIR}/${TARGETNAME}
 
