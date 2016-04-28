@@ -39,8 +39,18 @@ class TestSSHHandler(sshsrv.SSHHandler):
 
 sensor_thread_list = []
 
+def sel_clear_thread():
+    while True:
+        result=common.send_ipmi_sim_command("sel_list 0x20\n")
+        if int(result.split("\n")[1].strip()) == 0:
+            common.send_ipmi_sim_command("sel_add 0x20 0x02 0x69 0x4F 0x1F 0x57 0x20 0x00 0x04 0x10 0xf3 0x6f 0x02 0xff 0xff\n"
+        time.sleep(1)
 
 def spawn_sensor_thread():
+    t = threading.Thread(target=sel_clear_thread)
+    sensor_thread_list.append(t)
+    t.start()
+
     for sensor_obj in sdr.sensor_list:
         if sensor_obj.get_event_type() == "threshold":
             t = threading.Thread(target=sensor_obj.execute)
