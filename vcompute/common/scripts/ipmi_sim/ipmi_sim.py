@@ -11,6 +11,7 @@ import threading
 import sdr
 import common
 import sshsrv
+import time, os, string, subprocess
 
 SSH_IP_BINDING = '0.0.0.0'
 SSH_PORT_BINDING = 9300
@@ -39,8 +40,25 @@ class TestSSHHandler(sshsrv.SSHHandler):
 
 sensor_thread_list = []
 
+def sel_clear_thread():
+    check_sel = "ipmitool -H localhost -U admin -P admin sel list".split(' ')
+    while True:
+        pipe = subprocess.Popen(check_sel, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        if len(pipe[0]) > 0:
+            buf = pipe[0]
+        else:
+            buf = pipe[1]
+
+        if string.find(buf, "no entries") > 0:
+            os.system("ipmitool -H localhost -U admin -P admin raw 0x0a 0x44 0x01 0x00 0x02 0x69 0x4F 0x1F 0x57 0x20 0x00 0x04 0x10 0xf3 0x6f 0x02 0xff 0xff")
+
+        time.sleep(1)
 
 def spawn_sensor_thread():
+    t = threading.Thread(target=sel_clear_thread)
+    sensor_thread_list.append(t)
+    t.start()
+
     for sensor_obj in sdr.sensor_list:
         if sensor_obj.get_event_type() == "threshold":
             t = threading.Thread(target=sensor_obj.execute)
