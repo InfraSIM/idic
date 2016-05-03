@@ -1,0 +1,30 @@
+{
+    "$schema": "http://redfish.dmtf.org/schemas/v1/redfish-schema.1.0.0.json",
+    "title": "#Task.1.0.0.Task",
+    "$ref": "#/definitions/Task",
+    "definitions": {
+        "Task": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "Oem": {
+                    "$ref": "#/definitions/TaskOem",
+                    "description": "This is the manufacturer/provider specific extension moniker used to divide the Oem object into sections.",
+                    "longDescription": "The value of this string shall be of the format for the reserved word *Oem*."
+                }
+            },
+            "description": "This is the schema definition for a Task resource.",
+            "longDescription": "This resource shall be used to represent a task for a Redfish implementation."
+        },
+        "TaskOem": {
+            "type": "object",
+            "properties": {
+                "SystemId": {
+                    "type": "string",
+                    "description": "System identifier"
+                }
+            }
+        }
+    },
+    "copyright": "Copyright 2014-2015 Distributed Management Task Force, Inc. (DMTF). All rights reserved."
+}

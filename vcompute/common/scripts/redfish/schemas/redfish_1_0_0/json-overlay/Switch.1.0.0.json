@@ -1,0 +1,171 @@
+{
+    "title": "#Switch.1.0.0.Switch",
+    "$ref": "#/definitions/Switch",
+    "definitions":{
+        "Ports":{
+            "type": "object",
+            "patternProperties": {
+                "^([a-zA-Z_][a-zA-Z0-9_]*)?@(odata|Redfish|Message|Privileges)\\.[a-zA-Z_][a-zA-Z0-9_.]+$" : {
+                    "type": ["array", "boolean", "number", "null", "object", "string"],
+                    "description": "This property shall specify a valid odata or Redfish property."
+                }
+            },
+            "additionalProperties": false,
+            "properties": {
+                "Oem": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Oem",
+                    "description": "This is the manufacturer/provider specific extension moniker used to divide the Oem object into sections.",
+                    "longDescription": "The value of this string shall be of the format for the reserved word *Oem*."
+                },
+                "PortName": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "readonly": true,
+                    "description": "Name of the port",
+                    "longDescription": "The value of this property shall be the name of the port."
+                },
+                "Mtu": {
+                    "type": "string",
+                    "description": "This is the MTU size for the port.",
+                    "longDescription": "The value of this string shall be the MTU size for this port."
+                },
+                "Speed": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "readonly": true,
+                    "description": "This is the speed of the port",
+                    "longDescription": "The value of this property shall the speed of the port."
+                },
+                "State": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                "enum": [
+                    "None",
+                    "down",
+                    "up"
+                ],
+                "enumDescriptions": {
+                    "None": "No port state information is available",
+                    "down": "The port is in the down state",
+                    "up": "The port is in the up state"
+                },
+                    "readonly": true,
+                    "description": "Describes current state of the port.",
+                    "longDescription": "The value of this property shall be a description of the current state of the port."
+                },
+                "InputUtilization": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "readonly": true,
+                    "description": "This is the input utilization of this port",
+                    "longDescription": "The value of this property shall be the input utilization of this port."
+                },
+                "OutputUtilization": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "readonly": true,
+                    "description": "This is the output utilization of this port",
+                    "longDescription": "The value of this property shall be the output utilization of this port."
+                }
+            },
+            "description": "This is the base type for addressable members of an array.",
+            "longDescription": "Array members can be referenced using the value returned in the @odata.id property which may or may not be a dereferenceable URL. The @odata.id of this entity shall be the location of this element within an Item."
+        },
+        "Switch":{
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "@odata.context": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/context"
+                },
+                "@odata.id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/id"
+                },
+                "@odata.type": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/type"
+                },
+                "Oem": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Oem",
+                    "description": "This is the manufacturer/provider specific extension moniker used to divide the Oem object into sections.",
+                    "longDescription": "The value of this string shall be of the format for the reserved word *Oem*."
+                },
+                "Id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Id"
+                },
+                "Description": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Description"
+                },
+                "Name": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Name"
+                },
+                "Status": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Status"
+                },
+                "PlatformDescription": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This is a textual description of physical entity",
+                    "longDescription": "The value of this property shall be a textual description of physical entity."
+                },
+                "HWRevision": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This is the vendor specific firmware revision string",
+                    "longDescription": "The value of this property shall be the vendor specific hardware revision string."
+                },
+                "FWRevision": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This is the vendor specific hardware revision string",
+                    "longDescription": "The value of this property shall be the vendor specific firmware revision string."
+                },
+                "SerialNumber": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This is the vendor specific serial number string",
+                    "longDescription": "The value of this property shall be the vendor specific serial number string."
+                },
+                "Model": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This is the vendor specific model name identifier string.",
+                    "longDescription": "The value of this property shall be the vendor specific model name identifier string."
+                },
+                "ManufactureName": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This is the name of the manufacturer of this physical component",
+                    "longDescription": "The value of this property shall be the name of the manufacturer of this physical component."
+                },
+                "Ports@odata.count": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/count"
+                },
+                "Ports@odata.navigationLink": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/idRef"
+                },
+                "Ports": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Ports"
+                    },
+                    "readonly": true,
+                    "description": "This is the definition for switch ports.",
+                    "longDescription": "These properties shall be the definition for switch ports."
+                }
+            },
+            "description": "This is the schema definition for the Switch properties.  It represents the properties for Ports",
+            "longDescription": "This resource shall be used to represent the metrics for a switch resource for a OnRack installation."
+        }
+    },
+    "copyright": "Copyright 2015 EMC Corporation. (EMC). All rights reserved."
+}
