@@ -1,0 +1,38 @@
+{
+    "title": "#LogEntryCollection.LogEntryCollection",
+    "$ref": "#/definitions/LogEntryCollection",
+    "definitions": {
+        "LogEntryCollectionOem": {
+            "type": "object",
+            "properties": {
+                "PolledAt": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This is the timestamp at which information on this page was gathered",
+                    "longDescription": "The value shall represent the timestamp at which information on this page was gathered."
+                }
+            },
+            "description": "This is the base type for resources and referenceable members."
+        },
+        "LogEntryCollection": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "Members": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "http://redfish.dmtf.org/schemas/v1/LogEntry.1.0.0.json#/definitions/LogEntry"
+                    },
+                    "readonly": true,
+                    "description": "Contains the members of this collection."
+                },
+                "Oem": {
+                    "$ref": "#/definitions/LogEntryCollectionOem",
+                    "description": "This is the manufacturer/provider specific extension moniker used to divide the Oem object into sections.",
+                    "longDescription": "The value of this string shall be of the format for the reserved word *Oem*."
+                }
+            }
+        }
+    },
+    "copyright": "Copyright 2014-2015 EMC Corporation. (EMC). All rights reserved."
+}

@@ -1,0 +1,184 @@
+{
+    "title": "#PDU.1.0.0.PDU",
+    "$ref": "#/definitions/PDU",
+    "definitions":{
+        "PDUs":{
+            "type": "object",
+            "patternProperties": {
+                "^([a-zA-Z_][a-zA-Z0-9_]*)?@(odata|Redfish|Message|Privileges)\\.[a-zA-Z_][a-zA-Z0-9_.]+$" : {
+                    "type": ["array", "boolean", "number", "null", "object", "string"],
+                    "description": "This property shall specify a valid odata or Redfish property."
+                }
+            },
+            "additionalProperties": false,
+            "properties": {
+                "Name": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Name"
+                },
+                "PDUId": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "",
+                    "longDescription": ""
+                },
+                "NumberOfOutlets": {
+                    "type": "number",
+                    "description": "",
+                    "longDescription": ""
+                }
+            },
+            "description": "",
+            "longDescription": ""
+        },
+        "VendorInformation":{
+            "type": "object",
+            "patternProperties": {
+                "^([a-zA-Z_][a-zA-Z0-9_]*)?@(odata|Redfish|Message|Privileges)\\.[a-zA-Z_][a-zA-Z0-9_.]+$" : {
+                    "type": ["array", "boolean", "number", "null", "object", "string"],
+                    "description": "This property shall specify a valid odata or Redfish property."
+                }
+            },
+            "additionalProperties": false,
+            "properties": {
+                "PlatformData": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "",
+                    "longDescription": ""
+                },
+                "PlatformHWType": {
+                    "type": "string",
+                    "description": "",
+                    "longDescription": ""
+                },
+                "HWRevision": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "",
+                    "longDescription": ""
+                },
+                "FWRevision": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "",
+                    "longDescription": ""
+                },
+                "SerialNumber": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "",
+                    "longDescription": ""
+                },
+                "ManufactureCode": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "",
+                    "longDescription": ""
+                },
+                "UnitName": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "",
+                    "longDescription": ""
+                },
+                "UnitPartNumber": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "",
+                    "longDescription": ""
+                },
+                "ProductTestTime": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "",
+                    "longDescription": ""
+                },
+                "ProductSignatrue": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "",
+                    "longDescription": ""
+                }
+            },
+            "description": "",
+            "longDescription": ""
+        },
+        "PDU":{
+            "type": "object",
+            "patternProperties": {
+                "^([a-zA-Z_][a-zA-Z0-9_]*)?@(odata|Redfish|Message|Privileges)\\.[a-zA-Z_][a-zA-Z0-9_.]+$" : {
+                    "type": ["array", "boolean", "number", "null", "object", "string"],
+                    "description": "This property shall specify a valid odata or Redfish property."
+                }
+            },
+            "additionalProperties": false,
+            "properties": {
+                "@odata.context": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/context"
+                },
+                "@odata.id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/id"
+                },
+                "@odata.type": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/type"
+                },
+                "Oem": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Oem",
+                    "description": "This is the manufacturer/provider specific extension moniker used to divide the Oem object into sections.",
+                    "longDescription": "The value of this string shall be of the format for the reserved word *Oem*."
+                },
+                "Id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Id"
+                },
+                "Description": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Description"
+                },
+                "Name": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Name"
+                },
+                "Status": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Status"
+                },
+                "VendorInformation": {
+                    "$ref": "#/definitions/VendorInformation"
+                },
+                "Members@odata.count": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/count"
+                },
+                "Members@odata.navigationLink": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/idRef"
+                },
+                "Members": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PDUs"
+                    },
+                    "readonly": true,
+                    "description": "",
+                    "longDescription": ""
+                },
+                "Contact": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "readonly": true,
+                    "description": "This is the contact information for this PDU",
+                    "longDescription": "The value of this property shall be the contact information for this PDU."
+                },
+                "Location": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "readonly": true,
+                    "description": "This is the location information for this PDU",
+                    "longDescription": "The value of this property shall be the location information for this PDU."
+                }
+            },
+            "description": "This is the schema definition for the PDU properties.",
+            "longDescription": "This resource shall be used to represent the metrics for a PDU resource for a OnRack installation."
+        }
+    },
+    "copyright": "Copyright 2015 EMC Corporation. (EMC). All rights reserved."
+}
