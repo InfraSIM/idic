@@ -1,0 +1,213 @@
+{
+    "title": "#PDUMetric.1.0.0.PDUMetric",
+    "$ref": "#/definitions/PDUMetric",
+    "definitions": {
+        "PDUOem": {
+            "type": "object",
+            "properties": {
+                "PolledAt": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This is the timestamp at which information on this page was gathered",
+                    "longDescription": "The value shall represent the timestamp at which information on this page was gathered."
+                }
+            },
+            "description": "This is the base type for resources and referenceable members."
+        },
+        "OutletInformation": {
+            "type": "object",
+            "patternProperties": {
+                "^([a-zA-Z_][a-zA-Z0-9_]*)?@(odata|Redfish|Message|Privileges)\\.[a-zA-Z_][a-zA-Z0-9_.]+$": {
+                    "type": ["array", "boolean", "number", "null", "object", "string"],
+                    "description": "This property shall specify a valid odata or Redfish property."
+                }
+            },
+            "additionalProperties": false,
+            "properties": {
+                "pduOutOn": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This property shall specify the power state of the outlet"
+                },
+                "pduOutMeanKVAValue": {
+                    "type": "string",
+                    "description": "This property shall specify the mean KVA Value for this outlet"
+                },
+                "pduOutRMSAmpsValue": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This property shall specify the RMS amps value for this outlet"
+                },
+                "pduOutPFactorValue": {
+                    "type": "string",
+                    "readonly": true,
+                    "longDescription": ""
+                },
+                "pduOutRMSAmpsPeak": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This property shall specify the peak RMS Amps value for this outlet"
+                },
+                "pduOutName": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This property shall specify the outlet name"
+                },
+                "pduOutKWHrValue": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This property shall specify the KWHr value for this outlet"
+                },
+                "Name": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This property shall specify the assigned name of this outlet"
+                }
+            },
+            "description": "",
+            "longDescription": ""
+        },
+        "PDUPower": {
+            "type": "object",
+            "patternProperties": {
+                "^([a-zA-Z_][a-zA-Z0-9_]*)?@(odata|Redfish|Message|Privileges)\\.[a-zA-Z_][a-zA-Z0-9_.]+$": {
+                    "type": ["array", "boolean", "number", "null", "object", "string"],
+                    "description": "This property shall specify a valid odata or Redfish property."
+                }
+            },
+            "additionalProperties": false,
+            "properties": {
+                "pduRMSVoltsValue": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This property shall specify the RMS volts value for this PDU"
+                },
+                "pduCommsFail": {
+                    "type": "string",
+                    "description": "This property shall specify the of the PDU communications link"
+                },
+                "pduName": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This property shall specify the PDU name"
+                },
+                "pduPwrSupplyFreq": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This property shall specify the power supply frequency of the PDU"
+                },
+                "pduRS": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": ""
+                },
+                "pduPwrFactorValue": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": ""
+                },
+                "pduMeanKVAValue": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This property shall specify the mean KVA value for this PDU"
+                },
+                "pduRMSAmpsValue": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This property shall specify the RMS amps value for this PDU"
+                },
+                "pduTotalEnergyValue": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This property shall specify the total energy used in KWatt hours used by this PDU"
+                },
+                "pduMeanKWattsValue": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This property shall specify the mean KWatts used by this PDU"
+                },
+                "pduMonEn": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": ""
+                },
+                "Outlets": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/OutletInformation"
+                    },
+                    "readonly": true,
+                    "description": "This property shall specify ann array of outlets present on the PDU"
+                },
+                "Outlets@odata.count": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/count"
+                },
+                "Outlets@odata.navigationLink": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/idRef"
+                },
+                "Name": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This property shall specify the assigned name of this PDU"
+                }
+            },
+            "description": "",
+            "longDescription": ""
+        },
+        "PDUMetric": {
+            "type": "object",
+            "patternProperties": {
+                "^([a-zA-Z_][a-zA-Z0-9_]*)?@(odata|Redfish|Message|Privileges)\\.[a-zA-Z_][a-zA-Z0-9_.]+$": {
+                    "type": ["array", "boolean", "number", "null", "object", "string"],
+                    "description": "This property shall specify a valid odata or Redfish property."
+                }
+            },
+            "additionalProperties": false,
+            "properties": {
+                "@odata.context": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/context"
+                },
+                "@odata.id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/id"
+                },
+                "@odata.type": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/type"
+                },
+                "Oem": {
+                    "$ref": "#/definitions/PDUOem",
+                    "description": "This is the manufacturer/provider specific extension moniker used to divide the Oem object into sections.",
+                    "longDescription": "The value of this string shall be of the format for the reserved word *Oem*."
+                },
+                "Id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Id"
+                },
+                "Description": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Description"
+                },
+                "Name": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Name"
+                },
+                "Status": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Status"
+                },
+                "Members@odata.count": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/count"
+                },
+                "Members@odata.navigationLink": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/idRef"
+                },
+                "Members": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PDUPower"
+                    },
+                    "readonly": true,
+                    "description": "This property shall specify an array of elements present on this PDU "
+                }
+            },
+            "description": "This is the schema definition for the PDU properties.",
+            "longDescription": "This resource shall be used to represent the metrics for a PDU resource for a OnRack installation."
+        }
+    },
+    "copyright": "Copyright 2016 EMC Corporation. (EMC). All rights reserved."
+}

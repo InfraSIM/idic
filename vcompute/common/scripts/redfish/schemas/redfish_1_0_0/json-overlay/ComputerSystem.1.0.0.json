@@ -1,0 +1,84 @@
+{
+    "$schema": "http://redfish.dmtf.org/schemas/v1/redfish-schema.1.0.0.json",
+    "title": "#ComputerSystem.1.0.0.ComputerSystem",
+    "definitions":{
+        "BootImage": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "description": "Friendly action name"
+                },
+                "target": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Link to invoke action"
+                }
+            }
+        },
+        "ComputerSystem":{
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "Actions": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "Oem": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "OnRack.BootImage": {
+                                    "$ref": "#/definitions/BootImage",
+                                    "description": "This is a reference to the system load boot image action.",
+                                    "longDescription": "The value of this string shall reference to system load boot image action ."
+                                }
+                            }
+                        }
+                    }
+                },
+                "Oem": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "EMC": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "VisionID_Chassis": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ],
+                                    "readonly": false,
+                                    "description": "This is the serial number of the enclosure chassis",
+                                    "longDescription": "The value shall represent the serial number of the enclosure chassis."
+                                },
+                                "VisionID_System": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ],
+                                    "readonly": false,
+                                    "description": "This is the serial number of the baseboard",
+                                    "longDescription": "The value shall represent the serial number of the base board."
+                                },
+                                "VisionID_Ip": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ],
+                                    "readonly": false,
+                                    "description": "This is the IP address of the system BMC",
+                                    "longDescription": "The value shall represent the IP address of the system BMC."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "copyright": "Copyright 2016 EMC Corporation. (EMC). All rights reserved."
+}
