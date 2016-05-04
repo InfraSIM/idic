@@ -1,0 +1,14 @@
+#!/usr/bin/env python
+
+# Builds restplus schemas
+
+from redfish2restplus import generate_restplus
+
+# redfish2restplus directories
+redfish_dir = 'redfish_1_0_0/json-schema'
+overlay_dir = 'redfish_1_0_0/json-overlay'
+model_dir = 'redfish_1_0_0/onrack_model.py'
+
+generate_restplus(redfish_dir, [overlay_dir], model_dir)
+
+print 'Created restplus schema model in {0}'.format(model_dir)

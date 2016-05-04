@@ -1,0 +1,608 @@
+{
+    "definitions": {
+        "Action_SystemsReset" : {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "@odata.context": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/context"
+                },
+                "@odata.id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/id"
+                },
+                "@odata.type": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/type"
+                },
+                "Oem": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Oem",
+                    "description": "This is the manufacturer/provider specific extension moniker used to divide the Oem object into sections.",
+                    "longDescription": "The value of this string shall be of the format for the reserved word *Oem*."
+                },
+                "Id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Id"
+                },
+                "Description": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Description"
+                },
+                "Name": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Name"
+                }
+            }
+        },
+        "Action_RefreshNode" : {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "@odata.context": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/context"
+                },
+                "@odata.id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/id"
+                },
+                "@odata.type": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/type"
+                },
+                "Oem": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Oem",
+                    "description": "This is the manufacturer/provider specific extension moniker used to divide the Oem object into sections.",
+                    "longDescription": "The value of this string shall be of the format for the reserved word *Oem*."
+                },
+                "Id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Id"
+                },
+                "Description": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Description"
+                },
+                "Name": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Name"
+                }
+            }
+        },
+        "Action_BootImage" : {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "@odata.context": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/context"
+                },
+                "@odata.id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/id"
+                },
+                "@odata.type": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/type"
+                },
+                "Oem": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Oem",
+                    "description": "This is the manufacturer/provider specific extension moniker used to divide the Oem object into sections.",
+                    "longDescription": "The value of this string shall be of the format for the reserved word *Oem*."
+                },
+                "Id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Id"
+                },
+                "Description": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Description"
+                },
+                "Name": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Name"
+                },
+                "OsNames": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "A list of the OS image names that can be installed on this computer system.",
+                    "longDescription": "The value of this property shall be a list of OS image names that can be installed on this computer system."
+                }
+            }
+        },
+        "Action_BMCImage" : {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "@odata.context": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/context"
+                },
+                "@odata.id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/id"
+                },
+                "@odata.type": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/type"
+                },
+                "Oem": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Oem",
+                    "description": "This is the manufacturer/provider specific extension moniker used to divide the Oem object into sections.",
+                    "longDescription": "The value of this string shall be of the format for the reserved word *Oem*."
+                },
+                "Id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Id"
+                },
+                "Description": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Description"
+                },
+                "Name": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Name"
+                }
+            }
+        },
+        "Action_BIOSmage" : {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "@odata.context": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/context"
+                },
+                "@odata.id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/id"
+                },
+                "@odata.type": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/type"
+                },
+                "Oem": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Oem",
+                    "description": "This is the manufacturer/provider specific extension moniker used to divide the Oem object into sections.",
+                    "longDescription": "The value of this string shall be of the format for the reserved word *Oem*."
+                },
+                "Id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Id"
+                },
+                "Description": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Description"
+                },
+                "Name": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Name"
+                }
+            }
+        },
+        "Action_BIOSConfig" : {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "@odata.context": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/context"
+                },
+                "@odata.id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/id"
+                },
+                "@odata.type": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/type"
+                },
+                "Oem": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Oem",
+                    "description": "This is the manufacturer/provider specific extension moniker used to divide the Oem object into sections.",
+                    "longDescription": "The value of this string shall be of the format for the reserved word *Oem*."
+                },
+                "Id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Id"
+                },
+                "Description": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Description"
+                },
+                "Name": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Name"
+                }
+            }
+        },
+        "Action_RAIDImage" : {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "@odata.context": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/context"
+                },
+                "@odata.id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/id"
+                },
+                "@odata.type": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/type"
+                },
+                "Oem": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Oem",
+                    "description": "This is the manufacturer/provider specific extension moniker used to divide the Oem object into sections.",
+                    "longDescription": "The value of this string shall be of the format for the reserved word *Oem*."
+                },
+                "Id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Id"
+                },
+                "Description": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Description"
+                },
+                "Name": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Name"
+                }
+            }
+        },
+        "Action_FlashAll" : {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "@odata.context": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/context"
+                },
+                "@odata.id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/id"
+                },
+                "@odata.type": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/type"
+                },
+                "Oem": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Oem",
+                    "description": "This is the manufacturer/provider specific extension moniker used to divide the Oem object into sections.",
+                    "longDescription": "The value of this string shall be of the format for the reserved word *Oem*."
+                },
+                "Id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Id"
+                },
+                "Description": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Description"
+                },
+                "Name": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Name"
+                }
+            }
+        },
+        "Action_IndicatorLed" : {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "@odata.context": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/context"
+                },
+                "@odata.id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/id"
+                },
+                "@odata.type": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/type"
+                },
+                "Oem": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Oem",
+                    "description": "This is the manufacturer/provider specific extension moniker used to divide the Oem object into sections.",
+                    "longDescription": "The value of this string shall be of the format for the reserved word *Oem*."
+                },
+                "Id": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Id"
+                },
+                "Description": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Description"
+                },
+                "Name": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Name"
+                },
+                "IndicatorLed.AllowableValues": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "A list of allowable values for the indicator Led",
+                    "longDescription": "The value of this property shall be a list of allowable values for the indicator Led"
+                },
+                "IndicatorLed": {
+                    "type": "string",
+                    "description": "(Required) This is the request state of the indicator LED",
+                    "longDescription": "The value of this property is required and shall be the request state of the indicator LED"
+                }
+            }
+        },
+        "PowerActionItemModelRequest" : {
+            "type": "object",
+            "properties": {
+                "reset_type": {
+                    "$ref": "Resource.json#/definitions/ResetType",
+                    "readonly": false,
+                    "description": "(Required) This is the request reset describes the type of reset requested.",
+                    "longDescription": "The value of this property is required and shall be the request state of the indicator LED"
+                }
+            }
+        },
+        "LedActionItemModel" : {
+            "type": "object",
+            "properties": {
+                "led_status": {
+                    "$ref": "ComputerSystem.1.0.0.json#/definitions/IndicatorLED",
+                    "readonly": true,
+                    "description": "This describes the state of the front panel LED.",
+                    "longDescription": "The value of this property shall be the request state of the front panel indicator LED"
+                }
+            }
+        },
+        "RefreshNodeActionItemModelRequest" : {
+            "type": "object",
+            "properties": {
+                "reset": {
+                    "type": "boolean",
+                    "readonly": true,
+                    "description": "When true, initiate an immediate reset of the node as part of the refresh",
+                    "longDescription": "When true, initiate an immediate reset of the node as part of the refresh"
+                }
+            }
+        },
+        "FilenameRequestModel" : {
+            "type": "object",
+            "properties": {
+                "filename": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "readonly": false,
+                    "description": "Name of flash image."
+                }
+            }
+        },
+        "FlashAllModel" : {
+            "type": "object",
+            "properties": {
+                "bios-file": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "readonly": false,
+                    "description": "(Required) Name of BIOS image.",
+                    "longDescription": "The value of this property is required and shall be the name of the BIOS image"
+                },
+                "bmc-file": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "readonly": false,
+                    "description": "(Required) Name of BMC image.",
+                    "longDescription": "The value of this property is required and shall be the name of the BMC image"
+                },
+                "megaraid-file": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "readonly": false,
+                    "description": "(Required) Name of MegaRaid image.",
+                    "longDescription": "The value of this property is required and shall be the name of the MegaRaid image"
+                }
+            }
+        },
+        "MgmtAddNodeModel" : {
+            "type": "object",
+            "properties": {
+                "ipaddress": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "readonly": false,
+                    "description": "(Required) Management node BMC IP address ",
+                    "longDescription": "The value of this property is required and shall be the IP address of the management node BMC"
+                },
+                "user": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "description": "(Required) This is the password associated with the management node BMC user name.  It should be passed in clear text.",
+                    "longDescription": "The value of this property is required and shall be the password associated with the user name. Password should be passed in clear text."
+                },
+                "password": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "readonly": false,
+                    "description": "(Required) This is the password associated with the management node BMC user name.  It should passed in clear text.",
+                    "longDescription": "The value of this property is required and shall be the password associated with the user name. Password should be passed in clear text."
+                }
+            }
+        },
+        "SwitchAddNodeModel" : {
+            "type" : "object",
+            "properties": {
+                "ipaddress": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "readonly": false,
+                    "description": "(Required) This is the assigned static IP address of the switch",
+                    "longDescription": "The value of this property is required and shall be the assigned static IP address of the awitch."
+                },
+                "community": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "readonly": false,
+                    "description": "(Required) This is the SNMP community of the switch.",
+                    "longDescription": "The value of this property is required and shall be the SNMP community of the switch."
+                }
+            }
+        },
+        "PDUAddNodeModel" : {
+            "type" : "object",
+            "properties": {
+                "ipaddress": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "readonly": false,
+                    "description": "(Required) This is the assigned static IP address of the PDU",
+                    "longDescription": "The value of this property is required and shall be the assigned static IP address of the PDU."
+                },
+                "community": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "readonly": false,
+                    "description": "(Required) This is the SNMP community of the PDU.",
+                    "longDescription": "The value of this property is required and shall be the SNMP community of the PDU."
+                }
+            }
+        },
+        "BootImageParamUser": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "readonly": false,
+                    "description": "(Required) This is the name of user",
+                    "longDescription": "The value of this property is required and shall be the name of the user."
+                },
+                "password": {
+                    "type": "string",
+                    "readonly": false,
+                    "description": "(Required) This is the password of user, it should pass the clear text, OnRack will do encryption before storing it into a kickstart file.",
+                    "longDescription": "The value of this property is required and shall be the password associated with the user name. Password should be pass in clear text, OnRack will do encryption before storing it into a kickstart file"
+                },
+                "sshKey": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "readonly": false,
+                    "description": "(Optional) This is the SSH key that will be appended into the file ~/.ssh/authorized_keys",
+                    "longDescription": "The value of this property is optional and shall be the SSH key that will be appended into the file ~/.ssh/authorized_keys."
+                },
+                "uid": {
+                    "type": "number",
+                    "readonly": false,
+                    "description": "(Required) The unique identifier of user",
+                    "longDescription": "The value of this property is required and shall be the unique identifier of user."
+                }
+            },
+            "description": "This describes the user parameter.",
+            "longDescription": "The value of this property shall be the user parameter."
+        },
+        "BootImageParamIpSetting": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "ipAddr": {
+                    "type": "string",
+                    "readonly": false,
+                    "description": "(Required) This is the assigned static IP address of the network device",
+                    "longDescription": "The value of this property is required and shall be the static IP address of the network device."
+                },
+                "gateway": {
+                    "type": "string",
+                    "readonly": false,
+                    "description": "(Required) This is the gateway address.",
+                    "longDescription": "The value of this string is required and shall be the gateway address."
+                },
+                "netmask": {
+                    "type": "string",
+                    "readonly": false,
+                    "description": "(Required) This is the subnet mask",
+                    "longDescription": "The value of this property is required and shall be the subnet mask."
+                },
+                "vlanId": {
+                    "type": "string",
+                    "readonly": false,
+                    "description": " (Optional) This is the VLAN ID represented as a array of integers with values of 0 to 4096",
+                    "longDescription": "The value of this property is optional and may be the VLAN ID represented as a array of integers with values of 0 to 4096."
+                }
+            },
+            "description": "This describes IP settings.",
+            "longDescription": "The value of this property shall be IP settings."
+        },
+        "BootImageParamNetworkDevice": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "device": {
+                    "type": "string",
+                    "readonly": false,
+                    "description": "(Required) The name of the network device.",
+                    "longDescription": "The value of this property is required and shall be the name of the network device."
+                },
+                "ipv4": {
+                    "$ref": "#/definitions/BootImageParamIpSetting",
+                    "description": "(Optional) This the ipv4 parameter of the network device.",
+                    "longDescription": "The value of this property is optional and may be the ipv4 parameter of the network device."
+                },
+                "ipv6": {
+                    "$ref": "#/definitions/BootImageParamIpSetting",
+                    "description": "(Optional) This is the ipv6 parameter of the network device.",
+                    "longDescription": "The value of this property is optional and may be the ipv6 parameter."
+                }
+            },
+            "description": "This describes the name and network parameters of a network device.",
+            "longDescription": "The value of this property shall describes the name and network parameters of a network device."
+        },
+        "BootImageParam": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "version": {
+                    "type": "string",
+                    "readonly": false,
+                    "description": "(Required) The version number of target OS that needs to install.",
+                    "longDescription": "The value of this property is required and shall be the version number of target OS that needs to install."
+                },
+                "osName": {
+                    "type": "string",
+                    "readonly": false,
+                    "description": "(Required) Name of the target OS to be installed",
+                    "longDescription": "The value of this property is required and shall be the name of the target OS to be installed."
+                },
+                "repo": {
+                    "type": "string",
+                    "readonly": false,
+                    "description": "(Required) The external OS repository address, currently only supports HTTP",
+                    "longDescription": "The value of this property is required and shall be the external OS repository address, currently only supports HTTP."
+                },
+                "rootPassword": {
+                    "type": "string",
+                    "readonly": false,
+                    "description": "(Required) The password for the OS root account.",
+                    "longDescription": "The value of this property is required and shall be the password for the OS root account."
+                },
+                "rootSshKey": {
+                    "type": "string",
+                    "readonly": false,
+                    "description": "(Optional) This is the SshKey for the OS root account.",
+                    "longDescription": "The value of this property is optional and may shall be the SshKey for the OS root account."
+                },
+                "domain": {
+                    "type": "string",
+                    "readonly": false,
+                    "description": "(Required) This is the domain for the target OS",
+                    "longDescription": "The value of this property is required and shall be the domain for the target OS."
+                },
+                "hostname": {
+                    "type": "string",
+                    "readonly": false,
+                    "description": "(Required) The hostname for target OS.",
+                    "longDescription": "The value of this property is required and shall be the hostname for target OS."
+                },
+                "dnsServers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "readonly": false,
+                    "description": "(Required) This is a list of Domain Name Servers.",
+                    "longDescription": "The value of this property is required and shall be a list of Domain Name Servers, you can specify multiple DNS servers, the first one will be primary, others are alternative."
+                },
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/BootImageParamUser"
+                    },
+                    "description": "(Optional) This is a list of user account information that will created after OS installation",
+                    "longDescription": "The value of this property is optional and shall be a list of user account information that shall created after OS installation"
+                },
+                "networkDevices": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/BootImageParamNetworkDevice"
+                    },
+                    "description": "(Optional) List of device names and static IP settings for network devices after OS installation.",
+                    "longDescription": "The value of this property is optional and may be a list of device names and static IP settings for network devices after OS installation"
+                }
+             },
+            "description": "This is the schema definition for Boot Image.",
+            "longDescription": "This resource shall be used to represent Boot Image."
+        }
+    },
+    "copyright": "Copyright 2014-2016 EMC Corporation. All rights reserved."
+}

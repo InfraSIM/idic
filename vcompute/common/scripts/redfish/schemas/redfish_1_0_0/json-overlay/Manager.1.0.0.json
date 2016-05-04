@@ -1,0 +1,110 @@
+{
+    "title": "#Manager.1.0.0.Manager",
+    "$ref": "#/definitions/Manager",
+    "definitions": {
+        "Interface": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "MACAddress": {
+                    "$ref": "#/definitions/MACAddress",
+                    "description": "This is the currently configured MAC address of the (logical port) interface.",
+                    "longDescription": "The value of this property shall be the effective current MAC Address of this interface. If an assignable MAC address is not supported, this is a read only alias of the PermanentMACAddress."
+                },
+                "IPv4Addresses": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "http://redfish.dmtf.org/schemas/v1/IPAddresses.1.0.0.json#/definitions/IPv4Address"
+                    },
+                    "readonly": true,
+                    "description": "The IPv4 addresses assigned to this interface",
+                    "longDescription": "The value of this property shall be an array of objects used to represent the IPv4 connection characteristics for this interface."
+                }
+            }
+        },
+        "Manager": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "Links": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "Oem": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "ManagerForPDUs@odata.count": {
+                                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/count"
+                                },
+                                "ManagerForPDUs@odata.navigationLink": {
+                                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/idRef"
+                                },
+                                "ManagerForPDUs": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "PDU.json#/definitions/PDU"
+                                    },
+                                    "readonly": true,
+                                    "description": "This property is an array of references to the PDUs that this manager has control over.",
+                                    "longDescription": "This is a reference to a collection of PDU resources."
+                                },
+                                "ManagerForSwitches@odata.count": {
+                                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/count"
+                                },
+                                "ManagerForSwitches@odata.navigationLink": {
+                                    "$ref": "http://redfish.dmtf.org/schemas/v1/odata.4.0.0.json#/definitions/idRef"
+                                },
+                                "ManagerForSwitches": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "Switch.json#/definitions/Switch"
+                                    },
+                                    "readonly": true,
+                                    "description": "This property is an array of references to the switches that this manager has control over.",
+                                    "longDescription": "This is a reference to a collection of switch resources."
+                                }
+                            }
+                        }
+                    }
+                },
+                "Oem": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "Interface": {
+                            "$ref": "#/definitions/Interface",
+                            "description": "This is a the IPv4 information the the BMC",
+                            "longDescription": "The represents the IPv4 information for the BMC."
+                        },
+                        "Chassis": {
+                            "$ref": "http://redfish.dmtf.org/schemas/v1/Chassis.json#/definitions/Chassis",
+                            "readonly": true,
+                            "description": "A reference to the chassis that contains this manager",
+                            "longDescription": "The value of this property shall be a reference to the resource that represents this chassis and shall be of type Chassis."
+                        },
+                        "ComputeSystem": {
+                            "$ref": "http://redfish.dmtf.org/schemas/v1/ComputerSystem.json#/definitions/ComputerSystem",
+                            "readonly": true,
+                            "description": "A reference to the system that contains this manager",
+                            "longDescription": "The value of this property shall be a reference to the resource that represents this ComputerSystem and shall be of type System."
+                        }
+                    }
+                },
+                "LogServices": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/LogService.json#/definitions/LogService",
+                    "readonly": true,
+                    "description": "This is a reference to a collection of Logs used by the manager.",
+                    "longDescription": "The value of this property shall contain a reference to a collection of type LogServiceCollection which are for the use of this manager."
+                }
+            },
+            "description": "This is the schema definition for a Manager.  Examples of managers are BMCs, Enclosure Managers, Management Controllers and other subsystems assigned managability functions.",
+            "longDescription": "This resource shall be used to represent a management subsystem for a Redfish implementation."
+        },
+        "MACAddress": {
+            "type": "string",
+            "pattern": "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"
+        }
+    },
+    "copyright": "Copyright 2014-2015 EMC Corporation (EMC). All rights reserved."
+}
