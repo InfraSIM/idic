@@ -1,0 +1,189 @@
+{
+    "$schema": "http://redfish.dmtf.org/schemas/v1/redfish-schema.1.0.0.json",
+    "title": "#SimpleStorage.1.0.0.SimpleStorage",
+    "$ref": "#/definitions/SimpleStorage",
+    "definitions": {
+        "StatusOem": {
+            "type": "object",
+            "properties": {
+                "Name": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "The physical name of the of the storage device",
+                    "longDescription": "This property shall indicate the name of this storage device."
+                },
+                "Status": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "The physical status of the storage device",
+                    "longDescription": "This property shall indicate the physical status of the storage device."
+                }
+            }
+        },
+        "DeviceStatus": {
+            "type": "object",
+            "properties": {
+                "State": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/State",
+                    "readonly": true,
+                    "description": "This indicates the known state of the resource, such as if it is enabled.",
+                    "longDescription": "This property shall represent if this component is available or not and why.  Enabled indicates the resource is available.  Disabled indicates the resource has been intentionally made unavailable but it can be enabled.  Offline indicates the resource is unavailable intentionally and requires action to be made available.  InTest indicates that the component is undergoing testing.  Starting indicates that the resource is on its way to becoming available.  Absent indicates the resources is physically unavailable."
+                },
+                "HealthRollup": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Health",
+                    "readonly": true,
+                    "description": "This represents the overall health state from the view of this resource.",
+                    "longDescription": "This property shall represent the HealthState of the resource and its dependent resources.  The values shall conform to those defined in the Redfish specification."
+                },
+                "Health": {
+                    "$ref": "http://redfish.dmtf.org/schemas/v1/Resource.json#/definitions/Health",
+                    "readonly": true,
+                    "description": "This represents the health state of this resource in the absence of its dependent resources.",
+                    "longDescription": "This property shall represent the HealthState of the resource without considering its dependent resources. The values shall conform to those defined in the Redfish specification."
+                },
+                "Oem": {
+                    "$ref": "#/definitions/StatusOem"
+                }
+            },
+            "readonly": true
+        },
+        "DeviceOem": {
+            "type": "object",
+            "properties": {
+                "Type": {
+                    "type": "string",
+                    "enum": [
+                        "Unknown",
+                        "SSD",
+                        "HDD",
+                        "Virtual"
+                    ],
+                    "description": "The storage device type ",
+                    "longDescription": "This property shall indicate the device type of this storage device."
+                },
+                "SerialNumber": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "The serial number for this storage device",
+                    "longDescription": "This property shall indicate the serial number for this storage device."
+                },
+                "Capacity": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "The capacity of this storage device",
+                    "longDescription": "This property shall indicate the capacity of this storage device."
+                }
+            }
+        },
+        "Device": {
+            "type": "object",
+            "properties": {
+                "Oem": {
+                    "$ref": "#/definitions/DeviceOem"
+                },
+                "Name": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "The name of the resource or array element.",
+                    "longDescription": "This object represents the Name property.  All values for resources described by this schema shall comply to the requirements as described in the Redfish specification. The value of this string shall be of the format for the reserved word *Name*."
+                },
+                "Status": {
+                    "$ref": "#/definitions/DeviceStatus"
+                },
+                "Manufacturer": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "readonly": true,
+                    "description": "The name of the manufacturer of this device",
+                    "longDescription": "This property shall indicate the name of the manufacturer of this storage device."
+                },
+                "Model": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "readonly": true,
+                    "description": "The product model number of this device",
+                    "longDescription": "This property shall indicate the model information as provided by the manufacturer of this storage device."
+                }
+            },
+            "required": [
+                "Name"
+            ]
+        },
+        "VirtualDevice": {
+            "type": "object",
+            "properties": {
+                "Name": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "The name of the virtual storage device.",
+                    "longDescription": "This object represents the Name property.  All values for resources described by this schema shall comply to the requirements as described in the Redfish specification. The value of this string shall be of the format for the reserved word *Name*."
+                },
+                "Access": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "The access permissions of this virtual storage device",
+                    "longDescription": "This property shall indicate the access permissions of this virtual storage device."
+                },
+                "State": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "The state of this virtual storage device",
+                    "longDescription": "This property shall indicate the state of this virtual storage device."
+                },
+                "Type": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "The RAID type of this virtual storage device",
+                    "longDescription": "This property shall indicate the RAID type of this virtual storage device."
+                },
+                "Size": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "The size of this virtual storage device",
+                    "longDescription": "This property shall indicate the size of this virtual storage device."
+                },
+                "DriveIndex": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "",
+                    "longDescription": ""
+                }
+            }
+        },
+
+        "SimpleStorage": {
+            "type": "object",
+            "properties": {
+                "Oem": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "VirtualDisks": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/VirtualDevice"
+                            },
+                            "readonly": true,
+                            "description": "The storage devices associated with this resource",
+                            "longDescription": "This property shall contain a list of storage devices associated with this resource"
+                        }
+                    }
+                },
+                "Devices": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Device"
+                    },
+                    "readonly": true,
+                    "description": "The storage devices associated with this resource",
+                    "longDescription": "This property shall contain a list of storage devices associated with this resource"
+                }
+            }
+        }
+    },
+    "copyright": "Copyright 2014-2015 Distributed Management Task Force, Inc. (DMTF). All rights reserved."
+}
