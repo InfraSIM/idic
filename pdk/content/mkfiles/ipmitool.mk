@@ -3,7 +3,7 @@
 include ${BASE}/.config
 
 PKG:=ipmitool
-VERSION:=1.8.13
+VERSION:=1.8.17
 DIR:=${PKG}-${VERSION}
 
 .PHONY: all
@@ -18,5 +18,5 @@ install:
 	${MAKE} -C ${DIR} install
 
 ${DIR}:
-	@tar -zxf ${PACKAGES}/${PKG}-${VERSION}.tar.gz
+	@tar -xvjf ${PACKAGES}/${PKG}-${VERSION}.tar.bz2
 	@cd ${DIR} && ./configure --prefix=${ROOT} --quiet
