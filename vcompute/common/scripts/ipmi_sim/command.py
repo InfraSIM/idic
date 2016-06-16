@@ -406,7 +406,7 @@ class Command_Handler:
         if len(cmd) == 0:
             return
 
-        num = 0
+        num = len(self.command_history)
         # re split
         # i.e. 'a,b;; c  d'
         args = re.split(r'[\s\,\;]+', cmd)
