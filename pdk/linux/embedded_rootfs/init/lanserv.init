@@ -12,7 +12,7 @@ TERM=/dev/tty5
 if [ -e /bin/ipmi_sim ]; then
 	logger -t $0 "starting BMC simulator..."
     mkdir -p /var/lock
-    /bin/ipmi_sim -c /etc/ipmi/vbmc.conf -f /etc/ipmi/vbmc.emu -s /var > $TERM < $TERM &
+    /bin/ipmi_sim -c /etc/ipmi/vbmc.conf -f /etc/ipmi/vbmc.emu -s /var/run > $TERM < $TERM &
 fi
 
 # start ipmisim wrapper
