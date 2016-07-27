@@ -13,6 +13,6 @@ platform-specific:
 	@[ -d ${ROOT}/etc/ipmi ] && cp ${BASE}/conf/* ${ROOT}/etc/ipmi/
 	@if [ -f ${TARGET_DATA_DIR}/${TARGET_EMU} ];then cp ${TARGET_DATA_DIR}/${TARGET_EMU} ${ROOT}/etc/ipmi/vbmc.emu; fi
 	@if [ -f ${TARGET_DATA_DIR}/${TARGET_SMBIOS} ];then cp ${TARGET_DATA_DIR}/${TARGET_SMBIOS} ${ROOT}/etc/ipmi/smbios.bin; fi
-	@if [ -f ${COMMON_ROMS_DIR}/${TARGET_SEABIOS} ];then cp ${COMMON_ROMS_DIR}/${TARGET_SEABIOS} ${ROOT}/etc/ipmi/; fi
+#	@if [ -f ${COMMON_ROMS_DIR}/${TARGET_SEABIOS} ];then cp ${COMMON_ROMS_DIR}/${TARGET_SEABIOS} ${ROOT}/etc/ipmi/; fi
 
 include ${PDK}/Makefile
