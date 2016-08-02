@@ -18,8 +18,14 @@ fi
 # start ipmisim wrapper
 if [ -f /etc/ipmi/util/ipmi_sim.py ]; then
     logger -t $0 "starting BMC simulator wrapper..."
-    python /etc/ipmi/util/ipmi_sim.py &
-    if [ $? -ne 0 ];then
-        logger -t $0 "failed to run BMC simulator wrapper..."
-    fi
+    for l in $(seq 3)
+    do
+        python /etc/ipmi/util/ipmi_sim.py &
+        if [ $? -ne 0 ];then
+            logger -t $0 "failed to run BMC simulator wrapper for the ${l} time(s) ..."
+        else
+            logger -t $0 "run BMC simulator wrapper successfully"
+            break
+        fi
+    done
 fi
