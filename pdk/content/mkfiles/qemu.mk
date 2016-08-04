@@ -6,6 +6,7 @@ PKG:=qemu
 VERSION:=master
 DIR:=${PKG}-${VERSION}
 BRANCH:=master
+TAG:=v2.6.0
 
 ifeq (${CONFIG_ARCH}, "")
 ${error "No CPU architecture specified"}
@@ -25,9 +26,10 @@ install:
 ${DIR}:
 	@echo "git clone qemu into ${DIR}"
 	@if [ ! -d ${DIR} ];then \
-		bash -c "git clone --depth 1 -b ${BRANCH} ${CONFIG_GIT_QEMU_URL} ${DIR}; \
+		bash -c "git clone ${CONFIG_GIT_QEMU_URL} ${DIR}; \
 		pushd ${DIR};\
 		git submodule update --init pixman dtc;\
+		git checkout ${TAG};\
 		popd"; \
 	fi;
 	@echo "configure qemu"
