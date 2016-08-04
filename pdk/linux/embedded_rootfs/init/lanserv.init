@@ -15,15 +15,20 @@ if [ -e /bin/ipmi_sim ]; then
     /bin/ipmi_sim -c /etc/ipmi/vbmc.conf -f /etc/ipmi/vbmc.emu -s /var/run > $TERM < $TERM &
 fi
 
+sleep 3
+
 # start ipmisim wrapper
 if [ -f /etc/ipmi/util/ipmi_sim.py ]; then
     logger -t $0 "starting BMC simulator wrapper..."
     for l in $(seq 3)
     do
         python /etc/ipmi/util/ipmi_sim.py &
+        sleep 1
         ipmisim_run=`ps ax | grep ipmi_sim.py | grep -v grep`
-        if [ -z $ipmisim_run ];then
-            logger -t $0 "failed to run BMC simulator wrapper for the ${l} time(s) ..."
+        if [ -z $ipmisim_run ]; then
+            if [ $l -eq 3 ]; then
+                logger -t $0 "failed to run BMC simulator wrapper"
+            fi
         else
             logger -t $0 "run BMC simulator wrapper successfully"
             break
