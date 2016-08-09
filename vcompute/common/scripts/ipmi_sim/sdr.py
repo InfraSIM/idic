@@ -107,9 +107,9 @@ def parse_sdrs():
 
         # get event type
         fd.seek(offset+13)
-        event_type = ord(fd.read(1)
+        event_type = ord(fd.read(1))
 
-        if event_type == 0x0:
+	if event_type == 0x0:
             sensor_value = None
         elif event_type == 0x1:
             sensor_value = read_sensor_raw_value(sensor_num, 'threshold')
@@ -130,7 +130,7 @@ def parse_sdrs():
 
         # get upper threshold mask(upper byte)
         fd.seek(offset+17)
-        sensor_utm_ub = ord(fd.read(1)
+        sensor_utm_ub = ord(fd.read(1))
 
         # settable threshold mask
         fd.seek(offset+18)
