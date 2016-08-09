@@ -137,6 +137,13 @@ class Command_Handler:
 
     # ######### SET SENSOR VALUE FUNCTION ##########
     def set_sensor_value(self, args):
+	"""
+        Set sensor value to sensor object, and then write back to
+        openipmi data structure.
+        :param args:
+            - <sensor id>, <sensor value>: set value to the id
+            - <sensor id>, state, <state id>, 1|0: set state bit to 1 or 0
+        """
         if len(args) != 2:
             common.msg_queue.put(self.handle_sensor_value.__doc__+'\n')
             return
@@ -152,59 +159,102 @@ class Command_Handler:
             sensor_obj.condition.notify()
             sensor_obj.condition.release()
 
-        if sensor_obj.get_event_type() == 'threshold':
-            try:
-                analog_value = float(args[1])
-            except:
-                error_info = 'illgel sensor value: {0}\n'.format(args[1])
-                common.msg_queue.put(error_info)
-                self.add_msg(error_info)
+
+        # <sensor id>, <sensor value>: set value to the id
+        if len(args) == 2:
+
+            if sensor_obj.get_event_type() == 'threshold':
+                try:
+                    analog_value = float(args[1])
+                except:
+                    error_info = 'illgel sensor value: {0}\n'.format(args[1])
+                    common.msg_queue.put(error_info)
+                    self.add_msg(error_info)
+                    return
+
+                formula = sensor_obj.get_reading_factor()[1]
+                raw_value = int(formula(analog_value))
+                info = 'sensor name: {0} formula: {1}. raw value: {2}\n'.\
+                    format(sensor_obj.get_name(), formula, raw_value)
+                common.logger.info(info)
+
+                sensor_obj.set_threshold_value(raw_value)
+
+            elif sensor_obj.get_event_type() == 'discrete':
+                # Parameters validation
+                try:
+                    int(args[1], 16)
+                except ValueError:
+                    common.msg_queue.put(self.handle_sensor_value.__doc__+'\n')
+                    return
+                if args[1].lower().startswith("0x") and len(args[1]) == 6:
+                    raw_value = args[1]
+                elif not args[1].lower().startswith("0x") and len(args[1]) == 4:
+                    raw_value = "0x"+args[1]
+                else:
+                    common.msg_queue.put(self.handle_sensor_value.__doc__+'\n')
+                    return
+                info = 'sensor name: {0} raw value: {1}\n'.\
+                    format(sensor_obj.get_name(), raw_value)
+                common.logger.info(info)
+
+                sensor_obj.set_discrete_value(raw_value)
+        # <sensor id>, state, <state id>, 1|0: set state bit to 1 or 0
+        elif len(args) == 4:
+            if sensor_obj.get_event_type() != 'discrete':
+                info = 'Set state bit is for discrete sensor only, sensor: {} is {}'.\
+                    format(args[0], sensor_obj.get_event_type())
+                common.msg_queue.put(info)
+                common.logger.info(info)
+                return
+            if args[1].lower() != 'state' \
+                    or int(args[2]) not in range(0, 15) \
+                    or args[3] not in ['1', '0']:
+                common.msg_queue.put(self.handle_sensor_value.__doc__+'\n')
                 return
 
-            formula = sensor_obj.get_reading_factor()[1]
-            raw_value = int(formula(analog_value))
-            info = 'sensor name: {0} formula: {1}. raw value: {2}\n'.format(
-                sensor_obj.get_name(), formula, raw_value)
-            common.logger.info(info)
+            # Set bit for discrete sensor
+            sensor_obj.set_state(int(args[2]), int(args[3]))
 
-            # switch to "user" mode if in "auto" mode
-            if sensor_obj.get_mode() == "auto":
-                sensor_obj.set_mode("user")
-                sensor_obj.condition.acquire()
-                sensor_obj.condition.notify()
-                sensor_obj.condition.release()
         else:
-            raw_value = common.str_hex_to_int(args[1])
-            if raw_value is None:
-                return
+            common.msg_queue.put(self.handle_sensor_value.__doc__+'\n')
+            return
 
-        sensor_obj.set_value(raw_value)
 
     # ######### GET SENSOR VALUE FUNCTION ##########
     def get_sensor_value(self, args):
-        if len(args) != 1:
+        """
+        Get sensor value from sensor object, NOT from openipmi data
+        structure.
+        :param args: <sensor id>
+        """
+	if len(args) != 1:
             common.msg_queue.put(self.handle_sensor_value.__doc__+'\n')
             return
 
         sensor_obj = self.get_sensor_instance(args[0])
         if sensor_obj is None:
             return
+	raw_value = sensor_obj.get_value()
 
-        raw_value = sensor_obj.get_value()
-        value = hex(raw_value)
         if sensor_obj.get_event_type() == 'threshold':
             formula = sensor_obj.get_reading_factor()[0]
             value = '%.3f' % formula(raw_value)
-        info = "{0} : {1} {2}\n".format(sensor_obj.get_name(),
-                                        value, sensor_obj.get_unit())
-        self.add_msg(info)
-        common.msg_queue.put(info)
+            info = "{0} : {1} {2}\n".format(sensor_obj.get_name(),
+                                            value, sensor_obj.get_unit())
+            self.add_msg(info)
+            common.msg_queue.put(info)
+        elif sensor_obj.get_event_type() == 'discrete':
+            info = "{} : {}".format(sensor_obj.get_name(), raw_value)
+            self.add_msg(info)
+            common.msg_queue.put(info)
 
     # ######### SENSOR VALUE FUNCTIONS ##########
     def handle_sensor_value(self, args):
         """
         Available 'sensor value' commands:
             set: set <sensor id> <value>
+                 set <sensor id> state <state id> 1|0
             get: get <sensor id>
         """
         if len(args) == 0:
