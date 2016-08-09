@@ -50,9 +50,9 @@ def read_sensor_raw_value(sensor_num, event_type="threshold"):
     if result == -1:
         return 0
     try:
-	value = result.split()[0]
+        value = result.split()[0]
     except AttributeError:
-	    return 0 # raw data can't be got, set raw value as '0'
+        return 0 # raw data can't be got, set raw value as '0'
     if event_type == "threshold":
         value = result.split()[0]
         info = "sensor num: {0} value: 0x{1}".format(hex(sensor_num), value)
@@ -113,7 +113,7 @@ def parse_sdrs():
         fd.seek(offset+13)
         event_type = ord(fd.read(1))
 
-	if event_type == 0x0:
+        if event_type == 0x0:
             sensor_value = None
         elif event_type == 0x1:
             sensor_value = read_sensor_raw_value(sensor_num, 'threshold')
@@ -273,8 +273,8 @@ def parse_sdrs():
         # set sensor units 1 byte
         sensor_obj.set_su1(sensor_su1)
 
-	#comment this raw value out since we have no clue
-	#how this sensor unit bit [7:6] impacts sensor reading.
+        #comment this raw value out since we have no clue
+        #how this sensor unit bit [7:6] impacts sensor reading.
         #if sensor_su1 >> 6 != 0:
         #    raw_value = struct.unpack('b', chr(sensor_value))[0]
         #    sensor_obj.set_raw_value(raw_value)

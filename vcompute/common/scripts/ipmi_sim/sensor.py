@@ -76,7 +76,7 @@ class Sensor:
         self.ID = ID
         self.tp = tp
         self.lock = threading.Lock()
-	self.lock_sensor_write = threading.Lock()
+        self.lock_sensor_write = threading.Lock()
         self.condition = threading.Condition()
         self.time_cond = threading.Condition()
         self.mode = "user"
@@ -423,10 +423,10 @@ class Sensor:
         # sensor value
         if self.get_event_type() == 'threshold':
             value = "%.3f" % self.get_reading_factor()[0](self.value)
-	elif self.get_event_type() == 'discrete':
+        elif self.get_event_type() == 'discrete':
             value = self.value
 
-	info += "| {0:<10}".format(value)
+        info += "| {0:<10}".format(value)
         # Sensor Unit
         su = self.get_unit()
         info += "| {0:<20}".format(su)
