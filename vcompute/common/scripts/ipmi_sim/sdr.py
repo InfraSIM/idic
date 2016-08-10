@@ -49,10 +49,6 @@ def read_sensor_raw_value(sensor_num, event_type="threshold"):
                                           hex(sensor_num))
     if result == -1:
         return 0
-    try:
-        value = result.split()[0]
-    except AttributeError:
-        return 0 # raw data can't be got, set raw value as '0'
     if event_type == "threshold":
         value = result.split()[0]
         info = "sensor num: {0} value: 0x{1}".format(hex(sensor_num), value)
