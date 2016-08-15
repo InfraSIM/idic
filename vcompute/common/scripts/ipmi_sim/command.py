@@ -167,7 +167,7 @@ class Command_Handler:
                 try:
                     analog_value = float(args[1])
                 except:
-                    error_info = 'illgel sensor value: {0}\n'.format(args[1])
+                    error_info = 'illegal sensor value: {0}\n'.format(args[1])
                     common.msg_queue.put(error_info)
                     self.add_msg(error_info)
                     return
