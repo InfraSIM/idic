@@ -3,7 +3,7 @@
 # start socat, listen 9003 port and direct the info to pty
 if [ -e /bin/socat ]; then
     logger -t $0 "starting socat...."
-    /bin/socat pty,link=/etc/ipmi/pty0,waitslave tcp-listen:9003,fork &
+    /bin/socat pty,link=/etc/ipmi/pty0,waitslave udp-listen:9003,fork &
 fi
 
 sleep 5
