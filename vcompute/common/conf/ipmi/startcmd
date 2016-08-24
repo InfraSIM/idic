@@ -232,7 +232,7 @@ if [ -e ${QEMU_SYSTEM_X86_64} ]; then
 
     do_log "smbios option: \"${SMBIOS_OPTION}\""
 
-    CMD="-vnc :1 ${KVM_FEATURE} -boot order=${ORDER},menu=${MENU} -device sga -chardev socket,id=ipmi0,host=localhost,port=9002,reconnect=10 -device ipmi-bmc-extern,chardev=ipmi0,id=bmc0 -device isa-ipmi-bt,bmc=bmc0 -device ich9-usb-ehci1 -serial mon:tcp:127.0.0.1:9003,nowait -m ${VMEM} -cpu Haswell,+vmx -smp ${VSMP} ${BIOS_OPTION} ${SMBIOS_OPTION} ${CONTROLLER_OPTION} ${DRIVE_OPTION} ${NETWORK_OPTION} -cdrom /dev/sr0 -machine vmport=off"
+    CMD="-vnc :1 ${KVM_FEATURE} -boot order=${ORDER},menu=${MENU} -device sga -chardev socket,id=ipmi0,host=localhost,port=9002,reconnect=10 -device ipmi-bmc-extern,chardev=ipmi0,id=bmc0 -device isa-ipmi-bt,bmc=bmc0 -device ich9-usb-ehci1 -serial mon:udp:127.0.0.1:9003,nowait -m ${VMEM} -cpu Haswell,+vmx -smp ${VSMP} ${BIOS_OPTION} ${SMBIOS_OPTION} ${CONTROLLER_OPTION} ${DRIVE_OPTION} ${NETWORK_OPTION} -cdrom /dev/sr0 -machine vmport=off"
 
 	do_log "starting virtual host..."
     do_log "qemu parameters: \"${CMD}\""
@@ -245,12 +245,12 @@ if [ -e ${QEMU_SYSTEM_X86_64} ]; then
 
         [ $retry -gt 10 ] && break
 
-        if ! netstat -tl | grep -qs "9003";then
-            let retry++
-            do_log "Wait on port 9003 up (retries: $retry)"
-            sleep 1
-            continue
-        fi
+        #if ! netstat -tl | grep -qs "9003";then
+        #    let retry++
+        #    do_log "Wait on port 9003 up (retries: $retry)"
+        #    sleep 1
+        #    continue
+        #fi
 
         qemu-system-x86_64 ${CMD} >/var/log/qemu.log 2>&1 &
 
