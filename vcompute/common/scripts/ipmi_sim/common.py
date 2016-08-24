@@ -92,7 +92,8 @@ def send_ipmi_sim_command(command):
         logger.info("IPMI SIM command result: " + result)
     except socket.error as se:
         logger.error("Unable to connect lanserv at 9000: {0}".format(se))
-    lock.release()
+    finally:
+	    lock.release()
     return result
 
 
@@ -122,6 +123,6 @@ def send_ipmitool_command(*cmds):
         err_message = "failed to send ipmitool command: {0}".format(dst_cmd)
         logger.error(err_message)
         lock.release()
-        sys.exit(1)
+        return -1
     lock.release()
     return stdout

@@ -1,0 +1,22 @@
+menu "Redfish Simulation"
+
+config CONFIG_REDFISH_SIMULATION
+        bool "redfish simulation"
+        default n
+        help
+                Enable redfish simulation
+
+config CONFIG_PKG_redfishsim
+        bool "redfish Service"
+        depends CONFIG_REDFISH_SIMULATION
+        default y 
+        help
+                Enable redfish service
+
+config CONFIG_GIT_REDFISHSIM_URL
+        string "Git URL"
+        depends CONFIG_PKG_redfishsim
+        default "git@eos2git.cec.lab.emc.com:InfraSIM/redfish_sim.git"
+        help
+                Set the redfish Git repo URL
+endmenu

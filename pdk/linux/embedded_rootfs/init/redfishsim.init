@@ -1,0 +1,3 @@
+#!/bin/sh
+
+[ -f /usr/bin/run.py ]; then /usr/bin/run.py &
