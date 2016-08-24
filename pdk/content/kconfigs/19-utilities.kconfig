@@ -97,6 +97,12 @@ config CONFIG_PKG_ipmisim_util
         help
                 select to enable ipmisim util
 
+config CONFIG_PKG_redfish_util
+       bool "redfish_util"
+       default y
+       help
+           select to enable redfish util
+
 config CONFIG_PKG_smbiostool
         bool "smbios tool"
         default y

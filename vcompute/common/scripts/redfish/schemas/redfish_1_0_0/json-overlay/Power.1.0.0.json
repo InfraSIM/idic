@@ -1,0 +1,28 @@
+{
+    "title": "#Power.1.0.0.Power",
+    "$ref": "#/definitions/Power",
+    "definitions":{
+        "PowerOem": {
+            "type": "object",
+            "properties": {
+                "PolledAt": {
+                    "type": "string",
+                    "readonly": true,
+                    "description": "This is the timestamp at which information on this page was gathered",
+                    "longDescription": "The value shall represent the timestamp at which information on this page was gathered."
+                }
+            },
+            "description": "This is the base type for resources and referenceable members."
+        },
+        "Power":{
+            "properties": {
+                "Oem": {
+                    "$ref": "#/definitions/PowerOem",
+                    "description": "This is the manufacturer/provider specific extension moniker used to divide the Oem object into sections.",
+                    "longDescription": "The value of this string shall be of the format for the reserved word *Oem*."
+                }
+            }
+        }
+    },
+    "copyright": "Copyright 2016 EMC Corporation. (EMC). All rights reserved."
+}

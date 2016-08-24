@@ -3,7 +3,7 @@
 # start socat, listen 9003 port and direct the info to pty
 if [ -e /bin/socat ]; then
     logger -t $0 "starting socat...."
-    /bin/socat pty,link=/etc/ipmi/pty0,waitslave tcp-listen:9003,fork &
+    /bin/socat pty,link=/etc/ipmi/pty0,waitslave udp-listen:9003,fork &
 fi
 
 sleep 5
@@ -34,4 +34,13 @@ if [ -f /etc/ipmi/util/ipmi_sim.py ]; then
             break
         fi
     done
+fi
+
+# start redfish web
+if [ -f /etc/redfish/run.py ]; then
+    logger -t $0 "starting redfish web application..."
+    python /etc/redfish/run.py &
+    if [ $? -ne 0 ];then
+        logger -t $0 "failed to run redfish web applicatioin..."
+    fi
 fi
