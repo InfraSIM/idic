@@ -5,7 +5,7 @@ include ${BASE}/.config
 PKG:=qemu
 VERSION:=master
 DIR:=${PKG}-${VERSION}
-BRANCH:=master
+BRANCH:=infrasim-qemu-v2.6.0
 
 ifeq (${CONFIG_ARCH}, "")
 ${error "No CPU architecture specified"}
