@@ -5,7 +5,7 @@ include ${BASE}/.config
 PKG:=OpenIPMI
 VERSION:=master
 DIR:=${PKG}-${VERSION}
-BRANCH:=master
+BRANCH:=infrasim-openipmi-2.0.22
 
 .PHONY: all
 all: build install
